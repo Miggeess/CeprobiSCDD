@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- DATA TABLES JQUERY-->
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+	<!-- DATA TABLES ESTILOS-->
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+
+
+
+	<!-- SELECT ROWS DATA TABLES-->
+	<script type="text/javascript" charset="utf8" 
+		src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+
+	<!-- BUTTON SELECT ROWS DATA TABLES --> 
+	<script type="text/javascript" charset="utf8" 
+		src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
+	
+
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	
+	<!-- BOOTBOX -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
+	
+	<link th:href="@{/css/ceprobi-estilos.css}" rel="stylesheet" />
+	<script type="text/javascript" th:src="@{/js/gral.js}"></script>
+	<script type="text/javascript" th:src="@{/js/solicitudTransporte/solicitudtransportejs.js}"></script>
+
+	<title>SCDData | SOLICITUD TRANSPORTE</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div class="container p-3 my-3">
+	<!--<div class="row">
+		<div class="col-md-3 d-flex justify-content-center">
+			<h3 id="txtNombreUsuario"></h3> 
+		</div>
+		<div class="col-md-3 d-flex justify-content-center">
+			<a th:href="@{/logout}">Cerrar sesión</a>
+		</div>
+	</div>-->
+	<div class="row justify-content-center">
+		<div class="jumbotron text-dark">
+			<h1>Crear solicitud de transporte</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-9">
+			<div class="table-responsive">
+				<table id="tablaSolicitudTransporte">
+				<thead>
+				<tr>
+					<!-- <th >Id solicitude</th> -->
+					<th >Nom Solicitante</th>
+					<th >Folio</th>
+					<th >Area adscripcion</th>
+					<th >Fecha solicitud</th>
+					<th >Estatus</th>
+				</tr>
+				</thead>
+				<tbody></tbody>
+				</table>
+			</div>
+		</div>
+		<div class="col-md-3" style="margin-top:50px">
+			<div class="row justify-content-center" style="margin-bottom:10px;">
+				<button type="button" class="col-md-5 btn btn-outline-info" onclick="consultaFolioLibre()">Crear</button>
+			</div>
+			<div class="row justify-content-center" style="margin-bottom:10px;">
+				<button type="button" class="col-md-5 btn btn-outline-success" onclick="editarSoliTransporte()">Ver</button>
+			</div>
+			<div class="row justify-content-center" style="margin-bottom:10px;">
+				<button type="button" class="col-md-5 btn btn btn-outline-danger" onclick="eliminarSolicitudIni()">Eliminar</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script th:inline="javascript">
+var datosSession = [[${session}]];
+</script>
+<th:block th:include="modal/solTransUser/modalSolTransporte">
+</body>
+</html>

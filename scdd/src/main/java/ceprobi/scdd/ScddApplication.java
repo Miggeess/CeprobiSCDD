@@ -1,0 +1,13 @@
+package ceprobi.scdd;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ScddApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ScddApplication.class, args);
+	}
+
+}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<link th:href="@{/css/ceprobi-estilos.css}" rel="stylesheet" />
+	<title>SCDData</title>
+</head>
+<body>
+<div th:replace="fragments/headerIndex :: headerIndex"></div>
+ <div class="container p-3 my-3">
+ 	<div class="jumbotron text-center">
+		<h1>Sistema Captura de Datos</h1>
+	</div>
+	<div class="row">
+ 		<div class="col-md-6 p-3 bg-light text-dark">
+ 			<form class="form-group" th:action="@{/AutUsuario}" method="post">
+ 				<div class="row d-flex justify-content-center">
+ 				<div class="col-md-2"></div>
+ 				<div class="col-md-7" style="padding: 25px; border-radius: 5px;background: linear-gradient(to right, red, purple);padding: 3px;">
+ 					<div style=" background: white;color: white;padding: 2rem;">
+						<div class="row d-flex justify-content-center">
+ 						<div class="col-md-10" >
+ 							<input type="text" id="txt_usr" name="txtNickName" class="form-control text-center" 
+ 								placeholder="Usuario" required>
+ 						</div>
+ 						<div class="col-md-10">
+ 							<input type="password" id="txt_pass" name="passUser" class="form-control text-center" 
+ 								placeholder="Contraseña" required>
+ 						</div>
+ 						<div class="col-md-10">
+ 							<button type="submit" class="btn btn-primary btn-block">Entrar</button>
+ 						</div>
+ 					</div>
+ 					</div>
+ 				</div>
+ 				<div class="col-md-2"></div>
+ 				</div>
+ 			</form>
+ 		</div><!--FORMULARIO-->
+ 		<div class="col-md-2"></div><!--ESPACIADO-->
+ 		<div class="col-md-4 p-3 bg-light">
+ 			<img th:src="@{/img/logo-ipn.png}" class="rounded mx-auto d-block" width="304" height="236">
+ 		</div><!--IMAGEN-->
+ 	</div><!--ROW-->
+ 	 <div th:if="${booleanLogout}" class="row justify-content-center">
+ 		<div class="col-md-8 alert alert-warning" style="height:40px;">
+ 			<p style="text-align:center">Cerro sesion correctamente</p>
+ 		</div>
+ 	</div>
+ 	<div th:if="${sessionActiva}" class="row justify-content-center">
+ 		<div class="col-md-8 alert alert-warning" style="height:40px;">
+ 			<p style="text-align:center">Usuario Activo</p>
+ 		</div>
+ 	</div>
+ 	<div th:if="${booleanErrorGral}" class="row justify-content-center">
+ 		<div class="col-md-8 alert alert-warning" style="height:40px;">
+ 			<p style="text-align:center">Error al acceder, consulte al administrador</p>
+ 		</div>
+ 	</div>
+ 	<div th:if="${usrInexistente}" class="row justify-content-center">
+ 		<div class="col-md-8 alert alert-warning" style="height:40px;">
+ 			<p style="text-align:center">Verifique sus datos</p>
+ 		</div>
+ 	</div>
+</div>
+</body>
+</html>

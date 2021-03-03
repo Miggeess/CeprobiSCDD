@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<!-- Modal -->
+<div class="container-fluid">
+<div th:fragment="exampleModal">
+<div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Solicitud de servicio de transporte</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	<div id="accordion">
+      		<div class="card">
+      			<div class="card-header">
+      				<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#datosSolicitante">DATOS DEL SOLICITANTE</button>
+      			</div>
+      			<div id="datosSolicitante" class="collapse" data-parent="#accordion">
+      				<div class="card-body">
+      					<form>
+      						<div class="form-group row">
+      						<div class="col-md-1">
+							<label for="txtNombre">Nombre:</label>
+							</div>
+							<div class="col-md-6">
+								<input type="text" class="form-control" id="txtNombre">
+							</div>
+							<div class="col-md-1">
+      						<label for="txtFolio">Folio:</label>
+      						</div>
+      						<div class="col-md-3">
+      						<input type="text" class="form-control" id="txtFolio">
+      						</div>
+      						</div>
+       						<div class="form-group row">
+      						<div class="col-md-2">
+      						<label for="txtAreaAdscripcion">Departamento o area de adscripción:</label>
+      						</div>
+      						<div class="col-md-5">
+      						<input type="text" class="form-control" id="txtAreaAdscripcion">
+      						</div>
+      						<div class="col-md-1">
+      						<label for="dateSolicitud">Fecha solicitud:</label>
+      						</div>
+      						<div class="col-md-3">
+      						<input type="date" class="form-control" id="dateSolicitud">
+      						</div>
+      						</div>
+      					</form>
+      				</div>
+      			</div>
+      		</div><!-- DATOS SOLICITANTE -->
+      		<div class="card">
+      			<div class="card-header">
+      				<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#datosServTransporte">DATOS DEL SERVICIO DE TRANSPORTE</button>
+      			</div>
+      			<div id="datosServTransporte" class="collapse" data-parent="#accordion">
+      				<div class="card-body">
+      				<form>
+      						<div class="col-md-3">
+      							<h5>Actividad</h5>	
+      						</div>
+      						<hr>
+                                          <div class="form-group row">
+                                                <div class="col-md-3 custom-control custom-radio">
+                                                      <input type="radio" class="custom-control-input" name="tipoViaje" value="1" id="tipoActividad1">
+                                                      <label class="custom-control-label" for="tipoActividad1">Academicas o Administrativas</label>
+                                                </div>
+                                                <div class="col-md-3 custom-control custom-radio">
+                                                      <input type="radio" class="custom-control-input" name="tipoViaje" value="2" id="tipoActividad2">
+                                                      <label class="custom-control-label" for="tipoActividad2">Investigación o Campo</label>
+                                                </div>
+                                                <div class="col-md-5">
+                                                      <textarea class="form-control" id="textDescripcionViaje" rows="2" placeholder="Descripcion del viaje"></textarea>
+                                                </div>
+                                    </div>		
+      					<div class="col-md-3">
+      						<h5>Viaje de ida</h5>	
+      					</div>
+      					<hr>
+      					<div class="form-group row">
+      						<div class="col-md-1">
+      							<label for="txtOrigen">Origen:</label>
+      						</div>
+      						<div class="col-md-3">
+      							<input type="text" class="form-control" id="txtOrigen">
+      						</div>
+      						<div class="col-md-1">
+      							<label for="txtDestino">Destino:</label>
+      						</div>
+      						<div class="col-md-3">
+      							<input type="text" class="form-control" id="txtDestino">
+      						</div>
+      						<div class="col-md-1">
+      							<label for="txtNPasajeros">N. Pasajeros:</label>
+      						</div>
+      						<div class="col-md-2">
+      							<input type="text" class="form-control" id="txtNPasajeros">
+      						</div>
+      					</div>
+      					<div class="form-group row">
+      						<div class="col-md-1">
+      							<label for="dateSalida">Fecha salida:</label>
+      						</div>
+      						<div class="col-md-3">
+      							<input type="date" class="form-control" id="dateSalida">
+      						</div>
+      						<div class="col-md-1">
+      							<label for="dateSolicitud">Hora de salida:</label>
+      						</div>
+                                          <div class="col-md-3">
+                                                <div class="custom-control custom-radio">
+                                                      <input type="radio" class="custom-control-input" name="horaSalida" value="1" id="horaSalida1">
+                                                      <label class="custom-control-label" for="horaSalida1">Mañana</label>
+                                                </div>
+                                                <div class="custom-control custom-radio">
+                                                      <input type="radio" class="custom-control-input" name="horaSalida" value="2" id="horaSalida2">
+                                                      <label class="custom-control-label" for="horaSalida2">Tarde</label>
+                                                </div>
+                                          </div>
+                                          <div class="col-md-3">
+                                           <textarea class="form-control" id="textAreaObservaciones" rows="3" placeholder="Observaciones"></textarea>
+                                          </div>
+      					</div>
+						<div class="col-md-3">
+      						<h5>Viaje de regreso</h5>	
+      					</div>
+      					<hr>
+      					<div class="form-group row">
+      						<div class="col-md-1">
+      							<label for="txtOrigenRegreso">Origen:</label>
+      						</div>
+      						<div class="col-md-3">
+      							<input type="text" class="form-control" id="txtOrigenRegreso">
+      						</div>
+      						<div class="col-md-1">
+      							<label for="txtDestinoRegreso">Destino:</label>
+      						</div>
+      						<div class="col-md-3">
+      							<input type="text" class="form-control" id="txtDestinoRegreso">
+      						</div>
+      						<div class="col-md-1">
+      							<label for="txtNPasajerosRegreso">N. Pasajeros:</label>
+      						</div>
+      						<div class="col-md-2">
+      							<input type="text" class="form-control" id="txtNPasajerosRegreso">
+      						</div>
+      					</div>
+      					<div class="form-group row">
+      						<div class="col-md-1">
+      							<label for="dateSalidaRegreso">Fecha solida:</label>
+      						</div>
+      						<div class="col-md-3">
+      							<input type="date" class="form-control" id="dateSalidaRegreso">
+      						</div>
+      						<div class="col-md-1">
+      							<label for="dateSolicitud">Hora de salida:</label>
+      						</div>
+
+      					 <div class="col-md-3">
+                                                <div class="custom-control custom-radio">
+                                                      <input type="radio" class="custom-control-input" name="horaSalidaRegreso" value="1" id="horaSalidaRegreso1">
+                                                      <label class="custom-control-label" for="horaSalidaRegreso1">Mañana</label>
+                                                </div>
+                                                <div class="custom-control custom-radio">
+                                                      <input type="radio" class="custom-control-input" name="horaSalidaRegreso" value="2" id="horaSalidaRegreso2">
+                                                      <label class="custom-control-label" for="horaSalidaRegreso2">Tarde</label>
+                                                </div>
+                                          </div>
+                                    <div class="col-md-3">
+                                      <textarea class="form-control" id="textAreaObservacionesRegreso" rows="3" placeholder="Observaciones"></textarea>
+                                    </div>
+                                    </div>
+      				</form>
+      				</div>
+      			</div>
+      		</div><!-- DATOS SERV. TRANSPORTE -->
+      		<div class="card">
+      			<div class="card-header">
+      				<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#controlFlotaVehicular">CONTROL DE FLOTA VEHICULAR</button>
+      			</div>
+      			<div id="controlFlotaVehicular" class="collapse" data-parent="#accordion">
+      				<div class="card-body">
+      					<form>
+      					<div class="form-group row">
+      						<div class="col-md-2">
+      							<label for="txtVehiculoAsignado">Vehiculo asignado</label>
+      						</div>
+      						<div class="col-md-3">
+      							<input type="text" id="txtVehiculoAsignado" class="form-control" disabled>
+      						</div>
+      						<div class="col-md-2">
+      							<label for="txtPlacas">Placas</label>
+      						</div>
+      						<div class="col-md-3">
+      							<input type="text" id="txtPlacas" class="form-control" disabled>
+      						</div>
+      					</div>
+                                    <div class="row">
+                                                <div class="col-md-2">
+                                                      <label for="txtNomOperador">Nombre Operador</label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                      <input type="text" id="txtNomOperador" class="form-control" disabled>
+                                                </div>
+                                          </div>
+      					<div class="col-md-3">
+      						<h5>Salida</h5>	
+      					</div>
+      					<hr>
+      					<div class="form-group row">
+      						<div class="col-md-2">
+      							<label for="txtKilometros">Kilometros</label>
+      						</div>
+      						<div class="col-md-3">
+      							<input type="text" id="txtKilometros" class="form-control" disabled>
+      						</div>
+      						<div class="col-md-2">
+      							<label for="txtCombustible">Combustible</label>
+      						</div>
+      						<div class="col-md-3">
+      							<input type="text" id="txtCombustible" class="form-control" disabled>
+      						</div>
+      					</div>
+      					<div class="form-group row">
+      						<div class="col-md-2">
+      							<label for="txtHoraSalida">Hora de salida</label>
+      						</div>
+      						<div class="col-md-3">
+      							<input type="text" id="txtHoraSalida" class="form-control" disabled>
+      						</div>
+      						<div class="col-md-2">
+      							<label for="textAreaObservacionesVehiculo">Observaciones</label>
+      						</div>
+      						<div class="col-md-5">
+      							<textarea class="form-control" id="textAreaObservacionesVehiculo" rows="1" disabled></textarea>
+      						</div>
+      					</div>
+      					<div class="col-md-3">
+      						<h5>Entrada</h5>	
+      					</div>
+      					<hr>
+      					<div class="form-group row">
+      						<div class="col-md-2">
+      							<label for="txtKilometrosEntrada">Kilometros</label>
+      						</div>
+      						<div class="col-md-3">
+      							<input type="text" id="txtKilometrosEntrada" class="form-control" disabled>
+      						</div>
+      						<div class="col-md-2">
+      							<label for="txtCombustibleEntrada">Combustible</label>
+      						</div>
+      						<div class="col-md-3">
+      							<input type="text" id="txtCombustibleEntrada" class="form-control" disabled>
+      						</div>
+      					</div>
+      					<div class="form-group row">
+      						<div class="col-md-2">
+      							<label for="txtHoraSalidaEntrada">Hora de entrada</label>
+      						</div>
+      						<div class="col-md-3">
+      							<input type="text" id="txtHoraSalidaEntrada" class="form-control" disabled>
+      						</div>
+      						<div class="col-md-2">
+      							<label for="textAreaObservacionesVehiculoEntrada">Observaciones</label>
+      						</div>
+      						<div class="col-md-5">
+      							<textarea class="form-control" id="textAreaObservacionesVehiculoEntrada" rows="1" disabled></textarea>
+      						</div>
+      					</div>
+                                    <div class="form-group row" style="display: none;">
+                                          <div class="col-md-3">
+                                                <input type="text" id="idConstrolVehicular" class="form-control" disabled>
+                                          </div>
+                                    </div>
+      				</form>
+      				</div>
+      			</div>
+      		</div><!-- CONTROL VEHICULAR -->
+      	</div>
+      </div>
+      <div class="modal-footer">
+      <!-- data-dismiss="modal" -->
+      <!--  -->
+        <button type="button" class="btn btn-secondary" onclick="cerrarSolicitud()" id="cancelarSolicitud">Cerrar</button>
+        <!--boton oculto-->
+        <button type="button" class="btn btn-warning" onclick="habilitarCampos()" id="botonEditar">Editar</button>
+        <!--falta programar-->
+        <button type="button" class="btn btn-primary" onclick="guardarSolicitudTransporte()" id="botonEnviar">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>

@@ -1,0 +1,36 @@
+#txt_usr {
+	border: none;
+	margin-bottom: 22px;
+}
+
+#txt_pass {
+	border: none;
+	margin-bottom: 22px;
+}
+
+#barraNav {
+	background-color: #6C1D45;
+}
+
+form {
+	border-radius: 1px solid black;
+}
+hr {
+	height: 5px;
+	background-color: #6C1D45;
+}
+a{
+	text-decoration: none;
+}
+.selected {
+	background: blue;
+	color: white;
+}
+.selected : hover{
+	background: green;
+	color: white;
+}
+.seleccionada {
+	background: red;
+	color: white;
+}
