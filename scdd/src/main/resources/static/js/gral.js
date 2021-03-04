@@ -6,3 +6,12 @@ $(document).ready(function () {
     context = window.location.protocol + "//" + window.location.host + '/' + context;
     console.log("Contexto : " + context);
 });
+
+function convertirMayus(e){
+	e.value = e.value.toUpperCase();
+}
+
+function soloNumeros(e){
+	var key = window.Event ? e.which : e.keyCode
+	return (key >= 48 && key <= 57)
+}
