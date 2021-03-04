@@ -217,7 +217,7 @@
       							<label for="txtKilometros">Kilometros</label>
       						</div>
       						<div class="col-md-3">
-      							<input type="text" id="txtKilometros" class="form-control" disabled>
+      							<input type="text" id="txtKilometros" class="form-control" disabled onKeyPress="return soloNumeros(event)" onblur="formatoNumerico(this)">
       						</div>
       						<div class="col-md-2">
       							<label for="txtCombustible">Combustible</label>
@@ -237,7 +237,7 @@
       							<label for="textAreaObservacionesVehiculo">Observaciones</label>
       						</div>
       						<div class="col-md-5">
-      							<textarea class="form-control" id="textAreaObservacionesVehiculo" rows="1" disabled></textarea>
+      							<textarea class="form-control" id="textAreaObservacionesVehiculo" rows="1" disabled onkeyup="convertirMayus(this);"></textarea>
       						</div>
       					</div>
       					<div class="col-md-3">
@@ -249,7 +249,7 @@
       							<label for="txtKilometrosEntrada">Kilometros</label>
       						</div>
       						<div class="col-md-3">
-      							<input type="text" id="txtKilometrosEntrada" class="form-control" disabled>
+      							<input type="text" id="txtKilometrosEntrada" class="form-control" disabled onKeyPress="return soloNumeros(event)" onblur="formatoNumerico(this)">
       						</div>
       						<div class="col-md-2">
       							<label for="txtCombustibleEntrada">Combustible</label>
@@ -269,7 +269,7 @@
       							<label for="textAreaObservacionesVehiculoEntrada">Observaciones</label>
       						</div>
       						<div class="col-md-5">
-      							<textarea class="form-control" id="textAreaObservacionesVehiculoEntrada" rows="1" disabled></textarea>
+      							<textarea class="form-control" id="textAreaObservacionesVehiculoEntrada" rows="1" disabled onkeyup="convertirMayus(this);"></textarea>
       						</div>
       					</div>
                                     <div class="form-group row" style="display: none;">

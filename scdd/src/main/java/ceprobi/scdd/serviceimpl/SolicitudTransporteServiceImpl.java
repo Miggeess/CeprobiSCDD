@@ -180,7 +180,7 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 		
 		if(request.getIdControlVehicular() != null) {
 			ScddControlVechicular objControlVehicular = controlVehicularRepository.buscaSolControlVehicular(Integer.parseInt(request.getIdControlVehicular()));
-			objControlVehicular.setIntKmEntrada(Integer.parseInt(request.getKilometrosEntrada()));
+			objControlVehicular.setTxtKmEntrada(request.getKilometrosEntrada());
 			objControlVehicular.setTxtCombustibleEntrada(request.getCombustibleEntrada());
 			objControlVehicular.setTmHoraEntrada(request.getHoraEntrada());
 			objControlVehicular.setTxtObservacionEntrada(request.getObservacionesEntrada());
@@ -200,7 +200,7 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 			controlVehicular.setTxtPlacas(request.getPlacas());
 			controlVehicular.setTxtNomOperador(request.getNomOperador());
 			
-			controlVehicular.setIntKMSalida(Integer.parseInt(request.getKilometrosSalida()));
+			controlVehicular.setTxtKMSalida(request.getKilometrosSalida());
 			controlVehicular.setTxtCombustibleSalida(request.getCombustibleSalida());
 			controlVehicular.setTmHoraSalida(request.getHoraSalida());
 			controlVehicular.setTxtObservacionSalida(request.getObservacionSalida());
@@ -421,7 +421,7 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 					dtoSolicitud.setNomOperador(resBusqueda.get(i).getControlVehicular() != null ? 
 							resBusqueda.get(i).getControlVehicular().getTxtNomOperador() : "");
 					dtoSolicitud.setKilometrosSalida(String.valueOf(resBusqueda.get(i).getControlVehicular() != null ? 
-							resBusqueda.get(i).getControlVehicular().getIntKMSalida() : ""));
+							resBusqueda.get(i).getControlVehicular().getTxtKMSalida() : ""));
 					dtoSolicitud.setCombustibleSalida(resBusqueda.get(i).getControlVehicular() != null ? 
 							resBusqueda.get(i).getControlVehicular().getTxtCombustibleSalida() : "");
 					dtoSolicitud.setHoraSalida(resBusqueda.get(i).getControlVehicular() != null ? 
@@ -431,8 +431,7 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 				
 					/** Rellenar datos control vehicular regreso-entrada */
 					if(resBusqueda.get(i).getControlVehicular() != null) {
-						dtoSolicitud.setKilometrosEntrada(String.valueOf(resBusqueda.get(i).getControlVehicular().getIntKmEntrada() > 0 ? 
-								resBusqueda.get(i).getControlVehicular().getIntKmEntrada() : ""));
+						dtoSolicitud.setKilometrosEntrada(resBusqueda.get(i).getControlVehicular().getTxtKmEntrada());
 						dtoSolicitud.setCombustibleEntrada(String.valueOf(resBusqueda.get(i).getControlVehicular().getTxtCombustibleEntrada() != null ? 
 								resBusqueda.get(i).getControlVehicular().getTxtCombustibleEntrada() : ""));
 						dtoSolicitud.setHoraEntrada(String.valueOf(resBusqueda.get(i).getControlVehicular().getTmHoraEntrada()  != null ? 

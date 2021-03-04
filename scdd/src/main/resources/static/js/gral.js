@@ -15,3 +15,8 @@ function soloNumeros(e){
 	var key = window.Event ? e.which : e.keyCode
 	return (key >= 48 && key <= 57)
 }
+
+function formatoNumerico(dato){
+	dato.value = new Intl.NumberFormat().format(dato.value);
+}
+

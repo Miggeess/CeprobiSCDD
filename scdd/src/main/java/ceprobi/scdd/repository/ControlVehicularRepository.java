@@ -14,9 +14,9 @@ public interface ControlVehicularRepository extends CrudRepository<ScddControlVe
 
 	@Transactional
 	@Modifying
-	@Query(value = "UPDATE ScddControlVechicular c SET c.intKmEntrada = :kmEntrada, c.txtCombustibleEntrada = :combustibleEntrada, c.tmHoraEntrada = :horaEntrada, c.txtObservacionEntrada = :observacionesEntrada "+
+	@Query(value = "UPDATE ScddControlVechicular c SET c.txtKmEntrada = :kmEntrada, c.txtCombustibleEntrada = :combustibleEntrada, c.tmHoraEntrada = :horaEntrada, c.txtObservacionEntrada = :observacionesEntrada "+
 					"WHERE c.idControlVehicular = :idControlVehicular")
-	public Integer actualizaControlVehicular(@Param("kmEntrada") Integer kmEntrada, @Param("combustibleEntrada") String combustibleEntrada, @Param("horaEntrada") String horaEntrada, @Param("observacionesEntrada") String observacionesEntrada, @Param("idControlVehicular") Integer idControlVehicular );
+	public Integer actualizaControlVehicular(@Param("kmEntrada") String kmEntrada, @Param("combustibleEntrada") String combustibleEntrada, @Param("horaEntrada") String horaEntrada, @Param("observacionesEntrada") String observacionesEntrada, @Param("idControlVehicular") Integer idControlVehicular );
 	
 	
 	@Query(value = "SELECT v FROM ScddControlVechicular v WHERE v.idControlVehicular = :idControlVehicular")

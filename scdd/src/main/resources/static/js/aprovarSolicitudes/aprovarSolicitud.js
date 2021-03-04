@@ -94,7 +94,6 @@ $(document).ready(function () {
 });	
 // }
 
-
 function seleccionFila(){
 
 	$('#tblSolicitudTransporte').on('click', 'tr', function () {

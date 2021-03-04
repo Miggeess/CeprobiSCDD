@@ -9,15 +9,6 @@ $(document).ready(function () {
  	seleccionarRegistro();
 });
 
-function convertirMayus(e){
-	e.value = e.value.toUpperCase();
-}
-
-function soloNumeros(e){
-	var key = window.Event ? e.which : e.keyCode
-	return (key >= 48 && key <= 57)
-}
-
 function seleccionarRegistro () {
 	$('#tablaSolicitudTransporte').on('click', 'tr', function () {
 		var nuevosDatos = $('#tablaSolicitudTransporte').DataTable().row(this).data();

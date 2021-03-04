@@ -35,8 +35,8 @@ public class ScddControlVechicular implements Serializable {/**
 	@Column(name = "TXT_NOMBRE_OPERADOR")
 	private String txtNomOperador;
 	
-	@Column(name = "INT_SALIDA_KM")
-	private int intKMSalida;
+	@Column(name = "TXT_SALIDA_KM")
+	private String txtKMSalida;
 	
 	@Column(name = "TXT_SALIDA_COMBUSTIBLE")
 	private String txtCombustibleSalida;
@@ -47,8 +47,8 @@ public class ScddControlVechicular implements Serializable {/**
 	@Column(name = "TXT_SALIDA_OBSERVACIONES")
 	private String txtObservacionSalida;
     
-    @Column(name = "INT_ENTRADA_KM")
-	private int intKmEntrada;
+    @Column(name = "TXT_ENTRADA_KM")
+	private String txtKmEntrada;
 	
 	@Column(name = "TXT_ENTRADA_COMBUSTIBLE")
 	private String txtCombustibleEntrada;
