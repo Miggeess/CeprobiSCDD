@@ -1,5 +1,6 @@
 package ceprobi.scdd.repository;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -45,11 +46,11 @@ public interface SolicitudTransporteRepository extends CrudRepository<ScddSoliTr
 			+ "s.txtDescripcionViaje = :txtDescripcionViaje, s.actividad.idActividad = :idActividad "
 			
 			+ "WHERE s.idSolicitudTransporte = :IdSolicituTransporte")
-	public Integer actualizaSolicitud(@Param("nomSolicitante") String nomSolicitante, @Param("txtFolio") String txtFolio, @Param("txtDeptoAreaAdscripcion") String txtDeptoAreaAdscripcion, @Param("fechaSolicitud") LocalDate fechaSolicitud, 
-			@Param("txtIdaOrigen") String txtIdaOrigen, @Param("txtIdaDestino") String txtIdaDestino, @Param("fechaIdaFecha") LocalDate fechaIdaFecha, 
+	public Integer actualizaSolicitud(@Param("nomSolicitante") String nomSolicitante, @Param("txtFolio") String txtFolio, @Param("txtDeptoAreaAdscripcion") String txtDeptoAreaAdscripcion, @Param("fechaSolicitud") Timestamp fechaSolicitud, 
+			@Param("txtIdaOrigen") String txtIdaOrigen, @Param("txtIdaDestino") String txtIdaDestino, @Param("fechaIdaFecha") Timestamp fechaIdaFecha, 
 			@Param("txtIdaHoraViaje") String txtIdaHoraViaje, @Param("numIdaNumPasajeros") Integer numIdaNumPasajeros, @Param("txtIdaObservaciones") String txtIdaObservaciones,
 			
-			@Param("txtRegresoOrigen") String txtRegresoOrigen, @Param("txtRegresoDestino") String txtRegresoDestino, @Param("fechaRegresoFecha") LocalDate fechaRegresoFecha, 
+			@Param("txtRegresoOrigen") String txtRegresoOrigen, @Param("txtRegresoDestino") String txtRegresoDestino, @Param("fechaRegresoFecha") Timestamp fechaRegresoFecha, 
 			@Param("txtRegresoHoraViaje") String txtRegresoHoraViaje, @Param("numRegresoNumPasajeros") Integer numRegresoNumPasajeros, @Param("txtRegresoObservaciones") String txtRegresoObservaciones,
 			
 			@Param("txtDescripcionViaje") String txtDescripcionViaje, @Param("idActividad") Integer idActividad,

@@ -1,6 +1,8 @@
 package ceprobi.scdd.model;
 
 import java.io.Serializable;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -12,8 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.Data;
 
@@ -39,9 +41,8 @@ public class ScddSoliTran implements Serializable {/**
 	@Column(name = "TXT_DEPTO_AREA_ADSCRIPCION")
 	private String txtDeptoAreaAdscripcion;
 	
-	@Column(name = "DT_FECHA_SOLICITUD", columnDefinition = "DATE")
-	private LocalDate fechaSolicitud;
-	
+	@Column(name = "DT_FECHA_SOLICITUD")
+	private Timestamp fechaSolicitud;
     
     @Column(name = " TXT_IDA_ORIGEN")
 	private String txtIdaOrigen;
@@ -49,8 +50,8 @@ public class ScddSoliTran implements Serializable {/**
 	@Column(name = "TXT_IDA_DESTINO")
 	private String txtIdaDestino;
 	
-	@Column(name = "TXT_IDA_FECHA", columnDefinition = "DATE")
-	private LocalDate fechaIdaFecha;
+	@Column(name = "TXT_IDA_FECHA")
+	private Timestamp fechaIdaFecha;
 	
 	@Column(name = "TXT_IDA_HORA")
 	private String txtIdaHoraViaje;
@@ -68,8 +69,8 @@ public class ScddSoliTran implements Serializable {/**
 	@Column(name = "TXT_REGRESO_DESTINO")
 	private String txtRegresoDestino;
 	
-	@Column(name = "TXT_REGRESO_FECHA", columnDefinition = "DATE")
-	private LocalDate fechaRegresoFecha;
+	@Column(name = "TXT_REGRESO_FECHA")
+	private Timestamp fechaRegresoFecha;
 	
 	@Column(name = "TXT_REGRESO_HORA")
 	private String txtRegresoHoraViaje;

@@ -22,7 +22,7 @@ public interface SolicitudTransporteService {
 	
 	ResponseGral rechazarTransporte(RequestSolTransporte request);
 	
-	ResponseGral obtenerFolioLibre();
+	ResponseGral obtenerFolioLibre(String noEmpleado);
 	
 	ResponseGral cancelarFolios(String folio);
 }

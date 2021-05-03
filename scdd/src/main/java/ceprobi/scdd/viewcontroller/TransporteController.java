@@ -40,8 +40,8 @@ public class TransporteController {
 	}
 	
 	@PostMapping(value = "buscaFolios", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseGral obtenerFolioLibre() {
-		return SolicitudTransporteService.obtenerFolioLibre();
+	public ResponseGral obtenerFolioLibre(@RequestBody RequestSolTransporte request) {
+		return SolicitudTransporteService.obtenerFolioLibre(request.getTxtUsuarioNoEmpleado());
 	}
 	
 	@PostMapping(value = "cancelarFolios", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

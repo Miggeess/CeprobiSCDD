@@ -1,8 +1,12 @@
 package ceprobi.scdd.serviceimpl;
  
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -64,10 +68,9 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 		
 		LOGGER.info("Entra a VALIDAR y GUARDAR solicitud de transporte");
 		
-		DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		LocalDate datePase = LocalDate.parse(request.getDateSolicitud(), formatDate);
-		LocalDate datePaseIda = LocalDate.parse(request.getDateSalida(), formatDate);
-		LocalDate datePaseRegreso = LocalDate.parse(request.getDateSalidaRegreso(), formatDate);
+		//DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		//LocalDate datePaseIda = LocalDate.parse(request.getDateSalida(), formatDate);
+		//LocalDate datePaseRegreso = LocalDate.parse(request.getDateSalidaRegreso(), formatDate);
 		
 		ScddActividad actividad = actividadRepository.obtieneActividadId(Integer.parseInt(request.getTxtActividad()));
 		ScddEstatus estatus = estatusRepositoryNew.obtieneEstatuscodigo(SOLICITUD_CREADA);  
@@ -76,14 +79,29 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 		solTransporte.setTxtNomSolicitante(request.getTxtNombreSolicitante());
 		solTransporte.setTxtFolio(request.getTxtFolioSolicitante());
 		solTransporte.setTxtDeptoAreaAdscripcion(request.getTxtAreaAdscripcion());
-		solTransporte.setFechaSolicitud(datePase);
+		
+		//Timestamp timestamp = Timestamp.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(request.getDateSolicitud()));
+		try {
+			Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(request.getDateSolicitud());
+			//Timestamp currentDate = new Timestamp(new Date().getTime());
+			Timestamp currentDate = new Timestamp(date1.getTime());
+			solTransporte.setFechaSolicitud(currentDate);
+			
+			Date dateFechaSalida = new SimpleDateFormat("dd/MM/yyyy").parse(request.getDateSalida());
+			solTransporte.setFechaIdaFecha(new Timestamp(dateFechaSalida.getTime()));
+			
+			Date dateFechaRegreso = new SimpleDateFormat("dd/MM/yyyy").parse(request.getDateSalidaRegreso());
+			solTransporte.setFechaRegresoFecha(new Timestamp(dateFechaRegreso.getTime()));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		
 		solTransporte.setActividad(actividad);
 		
 		solTransporte.setTxtIdaOrigen(request.getTxtOrigen());
 		solTransporte.setTxtIdaDestino(request.getTxtDestino());
 		solTransporte.setNumIdaNumPasajeros(Integer.parseInt(request.getTxtNPasajeros()));
-		solTransporte.setFechaIdaFecha(datePaseIda);
+		//solTransporte.setFechaIdaFecha(datePaseIda);
 		solTransporte.setTxtIdaHoraViaje(request.getCheckHoraIda());
 		solTransporte.setTxtIdaObservaciones(request.getTextAreaObservaciones());
 		
@@ -91,7 +109,7 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 		solTransporte.setTxtRegresoOrigen(request.getTxtOrigenRegreso());
 		solTransporte.setTxtRegresoDestino(request.getTxtDestinoRegreso());
 		solTransporte.setNumRegresoNumPasajeros(Integer.parseInt(request.getTxtNPasajerosRegreso()));
-		solTransporte.setFechaRegresoFecha(datePaseRegreso);
+		//solTransporte.setFechaRegresoFecha(datePaseRegreso);
 		solTransporte.setTxtRegresoHoraViaje(request.getCheckHoraRegreso());
 		solTransporte.setTxtRegresoObservaciones(request.getTextAreaObservacionesRegreso());
 		
@@ -248,21 +266,21 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 				solicitudLlenar.setTxtNombreSolicitante(responsesolTransporte.get(i).getTxtNomSolicitante().trim());
 				solicitudLlenar.setTxtFolioSolicitante(responsesolTransporte.get(i).getTxtFolio());
 				solicitudLlenar.setTxtAreaAdscripcion(responsesolTransporte.get(i).getTxtDeptoAreaAdscripcion());
-				solicitudLlenar.setDateSolicitud(responsesolTransporte.get(i).getFechaSolicitud().format(formatDate));
+				solicitudLlenar.setDateSolicitud(responsesolTransporte.get(i).getFechaSolicitud().toString());
 				
 				solicitudLlenar.setTxtActividad(responsesolTransporte.get(i).getActividad().getTxtDescripcionActividad());
 				
 				solicitudLlenar.setTxtOrigen(responsesolTransporte.get(i).getTxtIdaOrigen());
 				solicitudLlenar.setTxtDestino(responsesolTransporte.get(i).getTxtIdaDestino());
 				solicitudLlenar.setTxtNPasajeros(""+responsesolTransporte.get(i).getNumIdaNumPasajeros());
-				solicitudLlenar.setDateSalida(responsesolTransporte.get(i).getFechaIdaFecha().format(formatDate));
+				solicitudLlenar.setDateSalida(responsesolTransporte.get(i).getFechaIdaFecha().toString());
 				solicitudLlenar.setCheckHoraIda(responsesolTransporte.get(i).getTxtIdaHoraViaje());
 				solicitudLlenar.setTextAreaObservaciones(responsesolTransporte.get(i).getTxtIdaObservaciones());
 				
 				solicitudLlenar.setTxtOrigenRegreso(responsesolTransporte.get(i).getTxtRegresoOrigen());
 				solicitudLlenar.setTxtDestinoRegreso(responsesolTransporte.get(i).getTxtRegresoDestino());
 				solicitudLlenar.setTxtNPasajerosRegreso(""+responsesolTransporte.get(i).getNumRegresoNumPasajeros());
-				solicitudLlenar.setDateSalidaRegreso(responsesolTransporte.get(i).getFechaRegresoFecha().format(formatDate));
+				solicitudLlenar.setDateSalidaRegreso(responsesolTransporte.get(i).getFechaRegresoFecha().toString());
 				solicitudLlenar.setCheckHoraRegreso(responsesolTransporte.get(i).getTxtRegresoHoraViaje());
 				solicitudLlenar.setTextAreaObservacionesRegreso(responsesolTransporte.get(i).getTxtRegresoObservaciones());
 				
@@ -307,21 +325,22 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 				solicitudLlenar.setTxtNombreSolicitante(responsesolTransporte.get(i).getTxtNomSolicitante().trim());
 				solicitudLlenar.setTxtFolioSolicitante(responsesolTransporte.get(i).getTxtFolio());
 				solicitudLlenar.setTxtAreaAdscripcion(responsesolTransporte.get(i).getTxtDeptoAreaAdscripcion());
-				solicitudLlenar.setDateSolicitud(responsesolTransporte.get(i).getFechaSolicitud().format(formatDate));
+				//solicitudLlenar.setDateSolicitud(responsesolTransporte.get(i).getFechaSolicitud().format(formatDate));
+				solicitudLlenar.setDateSolicitud(responsesolTransporte.get(i).getFechaSolicitud().toString());
 				
 				solicitudLlenar.setTxtActividad(responsesolTransporte.get(i).getActividad().getTxtDescripcionActividad());
 				
 				solicitudLlenar.setTxtOrigen(responsesolTransporte.get(i).getTxtIdaOrigen());
 				solicitudLlenar.setTxtDestino(responsesolTransporte.get(i).getTxtIdaDestino());
 				solicitudLlenar.setTxtNPasajeros(""+responsesolTransporte.get(i).getNumIdaNumPasajeros());
-				solicitudLlenar.setDateSalida(responsesolTransporte.get(i).getFechaIdaFecha().format(formatDate));
+				solicitudLlenar.setDateSalida(responsesolTransporte.get(i).getFechaIdaFecha().toString());
 				solicitudLlenar.setCheckHoraIda(responsesolTransporte.get(i).getTxtIdaHoraViaje());
 				solicitudLlenar.setTextAreaObservaciones(responsesolTransporte.get(i).getTxtIdaObservaciones());
 				
 				solicitudLlenar.setTxtOrigenRegreso(responsesolTransporte.get(i).getTxtRegresoOrigen());
 				solicitudLlenar.setTxtDestinoRegreso(responsesolTransporte.get(i).getTxtRegresoDestino());
 				solicitudLlenar.setTxtNPasajerosRegreso(""+responsesolTransporte.get(i).getNumRegresoNumPasajeros());
-				solicitudLlenar.setDateSalidaRegreso(responsesolTransporte.get(i).getFechaRegresoFecha().format(formatDate));
+				solicitudLlenar.setDateSalidaRegreso(responsesolTransporte.get(i).getFechaRegresoFecha().toString());
 				solicitudLlenar.setCheckHoraRegreso(responsesolTransporte.get(i).getTxtRegresoHoraViaje());
 				solicitudLlenar.setTextAreaObservacionesRegreso(responsesolTransporte.get(i).getTxtRegresoObservaciones());
 				
@@ -352,7 +371,7 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 		
 		List<ScddSoliTran> resBusqueda = solicitudTransporteRepository.buscaSolicitud(Integer.parseInt(request.getIdSolicitud()));
 		
-		ScddFolios folioOcupado = foliosTransporteRepository.obtenerFolioOcupado(resBusqueda.get(0).getTxtFolio());
+		/**ScddFolios folioOcupado = foliosTransporteRepository.obtenerFolioOcupado(resBusqueda.get(0).getTxtFolio());
 		ScddEstatus estatusLibre= estatusRepositoryNew.obtieneEstatuscodigo(ESTATUS_FOLIO_LIBRE);
 		folioOcupado.setEstatus(estatusLibre);
 		foliosTransporteRepository.save(folioOcupado);
@@ -360,8 +379,9 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 		estatus = estatusRepositoryNew.obtieneEstatuscodigo(SOLICITUD_ELIMINADA);
 		Integer respo = solicitudTransporteRepository.actualizaEstatusTransporte(estatus.getIdEstatus(), 
 				Integer.parseInt(request.getIdSolicitud()));
+		*/
 		//Se modifica la eliminacion de la solicitud
-		//Integer respo = solicitudTransporteRepository.eliminaSolicitudTransporte(Integer.parseInt(request.getIdSolicitud()));
+		Integer respo = solicitudTransporteRepository.eliminaSolicitudTransporte(Integer.parseInt(request.getIdSolicitud()));
 		if(respo == null) {
 			response.setMensaje("Error al eliminar la solicitud");
 			response.setStatus("1");
@@ -377,7 +397,6 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 		ResponseBuscaSolicitud response = new ResponseBuscaSolicitud();
 		List<ScddSoliTran> resBusqueda = solicitudTransporteRepository.buscaSolicitud(Integer.parseInt(request.getIdSolicitud()));
 		ArrayList<RequestSolTransporte> listaSol = new ArrayList<>();
-		DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		if(!resBusqueda.isEmpty()) {
 			for(int i = 0; i < resBusqueda.size(); i++) {
 				RequestSolTransporte dtoSolicitud = new RequestSolTransporte();
@@ -387,21 +406,21 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 				dtoSolicitud.setTxtNombreSolicitante(resBusqueda.get(i).getTxtNomSolicitante().trim());
 				dtoSolicitud.setTxtFolioSolicitante(resBusqueda.get(i).getTxtFolio());
 				dtoSolicitud.setTxtAreaAdscripcion(resBusqueda.get(i).getTxtDeptoAreaAdscripcion());
-				dtoSolicitud.setDateSolicitud(resBusqueda.get(i).getFechaSolicitud().format(formatDate));
+				dtoSolicitud.setDateSolicitud(resBusqueda.get(i).getFechaSolicitud().toString());
 				
 				dtoSolicitud.setTxtActividad(String.valueOf(resBusqueda.get(i).getActividad().getIdActividad()));
 				
 				dtoSolicitud.setTxtOrigen(resBusqueda.get(i).getTxtIdaOrigen());
 				dtoSolicitud.setTxtDestino(resBusqueda.get(i).getTxtIdaDestino());
 				dtoSolicitud.setTxtNPasajeros(""+resBusqueda.get(i).getNumIdaNumPasajeros());
-				dtoSolicitud.setDateSalida(resBusqueda.get(i).getFechaIdaFecha().format(formatDate));
+				dtoSolicitud.setDateSalida(resBusqueda.get(i).getFechaIdaFecha().toString());
 				dtoSolicitud.setCheckHoraIda(resBusqueda.get(i).getTxtIdaHoraViaje());
 				dtoSolicitud.setTextAreaObservaciones(resBusqueda.get(i).getTxtIdaObservaciones());
 				
 				dtoSolicitud.setTxtOrigenRegreso(resBusqueda.get(i).getTxtRegresoOrigen());
 				dtoSolicitud.setTxtDestinoRegreso(resBusqueda.get(i).getTxtRegresoDestino());
 				dtoSolicitud.setTxtNPasajerosRegreso(""+resBusqueda.get(i).getNumRegresoNumPasajeros());
-				dtoSolicitud.setDateSalidaRegreso(resBusqueda.get(i).getFechaRegresoFecha().format(formatDate));
+				dtoSolicitud.setDateSalidaRegreso(resBusqueda.get(i).getFechaRegresoFecha().toString());
 				dtoSolicitud.setCheckHoraRegreso(resBusqueda.get(i).getTxtRegresoHoraViaje());
 				dtoSolicitud.setTextAreaObservacionesRegreso(resBusqueda.get(i).getTxtRegresoObservaciones());
 				
@@ -455,8 +474,8 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 	}
 
 	@Override
-	public ResponseGral obtenerFolioLibre() {
-		LOGGER.info("Entra a BUSCAR folio de transporte");
+	public ResponseGral obtenerFolioLibre(String noEmpleado) {
+		LOGGER.info("Entra a BUSCAR folio de transporte para el numero de empleado : " + noEmpleado);
 		ResponseGral response = new ResponseGral();
 		List<ScddFolios> foliosLibres = foliosTransporteRepository.obtenerFolioLibre(11);
 		response.setMensaje(foliosLibres.get(0).getTxtFolio());

@@ -348,11 +348,14 @@ function consultaFolioLibre() {
 	var now = new Date();
 	var day = ("0" + now.getDate()).slice(-2);
 	var month = ("0" + (now.getMonth() + 1)).slice(-2);
-	var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+	//var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+	var today = day + "/" + month + "/" + now.getFullYear();
+
+	var request = {txtUsuarioNoEmpleado : datosSession.session.nEmpleado};
 
 	$.ajax({
 		contentType: 'application/json; charset=UTF-8',
-        //data: JSON.stringify(datos),
+        data: JSON.stringify(request),
 		url : context + "/buscaFolios",
 		type : "post",
 		beforeSend : function() {
