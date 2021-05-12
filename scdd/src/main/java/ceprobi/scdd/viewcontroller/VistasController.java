@@ -40,6 +40,11 @@ public class VistasController {
 		return new ModelAndView(VIEW_INDEX_PAGE_CEPROBI);
 	}
 	
+	@GetMapping("construccion")
+	public ModelAndView sitioEnConstruccion() {
+		return new ModelAndView("/vistaprincipal/en_construccion");
+	}
+	
 	@GetMapping("AutUsuario")
 	public ModelAndView recargarPagina(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
