@@ -86,7 +86,6 @@ function guardarSolicitudTransporte() {
 		$.ajax({
 		contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify(request),
-        //context+/solicitudTransporte
 		url : context + "/guardaSolicitud",
 		type : "post",
 		beforeSend : function() {
@@ -103,7 +102,7 @@ function guardarSolicitudTransporte() {
 		error : function (data) {
 			$("#exampleModal").modal("hide"); 
 			console.log("Error al guardar solicitud");
-			alert("Error");
+			alert("Error al invocar el servicio al guardar la solicitud");
 		}
 	});
 	} else {
@@ -364,9 +363,10 @@ function consultaFolioLibre() {
 		success : function (data) {
 			console.log("Exito buscar folios solicitud");
 			txtFolioLibre = data.mensaje;
-
+			if (txtFolioLibre == "0") {
+				bootbox.alert("No hay folios disponibles, consulte al administrador");
+			} else {
 			console.log("Folio libre = " + txtFolioLibre)
-
 			$("#txtNombre").val(datosSession.session.txtNickNameUser);
 			$("#txtNombre").prop("disabled", true );
 			$("#txtAreaAdscripcion").val(datosSession.session.txtAreAdscripcion);
@@ -403,8 +403,7 @@ function consultaFolioLibre() {
 	        $("#textAreaObservacionesRegreso").val('');
 
 	        $("#textDescripcionViaje").val('');
-
-	        //OCULTAR BOTON EDITAR AL CREAR UNA NUEVA SOLICITUD
+			//OCULTAR BOTON EDITAR AL CREAR UNA NUEVA SOLICITUD
 	        $("#botonEditar").hide();
 	        $("#botonEnviar").show();
 
@@ -413,9 +412,11 @@ function consultaFolioLibre() {
 
 	        $("#exampleModal").modal({backdrop: 'static', keyboard: false});
 	        //<button data-target="#myModal" data-toggle="modal" data-backdrop="static" data-keyboard="false">
+			}
 	        },
 		error : function (data) {
 			console.log("Error al invocar el servicio");
+			bootbox.alert("Error al invocar el servicio para consultar los folios, consulte al administrador");
 		}
 	});
 }

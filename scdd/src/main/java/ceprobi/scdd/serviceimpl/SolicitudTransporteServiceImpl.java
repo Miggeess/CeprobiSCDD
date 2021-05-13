@@ -65,13 +65,7 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 	public ResponseGral guardarTransporte(RequestSolTransporte request) {
 		ResponseGral response = new ResponseGral();
 		ScddSoliTran solTransporte = new ScddSoliTran();
-		
 		LOGGER.info("Entra a VALIDAR y GUARDAR solicitud de transporte");
-		
-		//DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		//LocalDate datePaseIda = LocalDate.parse(request.getDateSalida(), formatDate);
-		//LocalDate datePaseRegreso = LocalDate.parse(request.getDateSalidaRegreso(), formatDate);
-		
 		ScddActividad actividad = actividadRepository.obtieneActividadId(Integer.parseInt(request.getTxtActividad()));
 		ScddEstatus estatus = estatusRepositoryNew.obtieneEstatuscodigo(SOLICITUD_CREADA);  
 		ScddUsuario usuario = userRepository.buscaUsuarioNoEmpleado(Integer.parseInt(request.getTxtUsuarioNoEmpleado()));
@@ -80,17 +74,16 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 		solTransporte.setTxtFolio(request.getTxtFolioSolicitante());
 		solTransporte.setTxtDeptoAreaAdscripcion(request.getTxtAreaAdscripcion());
 		
-		//Timestamp timestamp = Timestamp.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(request.getDateSolicitud()));
 		try {
 			Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(request.getDateSolicitud());
-			//Timestamp currentDate = new Timestamp(new Date().getTime());
 			Timestamp currentDate = new Timestamp(date1.getTime());
 			solTransporte.setFechaSolicitud(currentDate);
 			
-			Date dateFechaSalida = new SimpleDateFormat("dd/MM/yyyy").parse(request.getDateSalida());
-			solTransporte.setFechaIdaFecha(new Timestamp(dateFechaSalida.getTime()));
+			Date dateFechaSalida = new SimpleDateFormat("yyyy/MM/dd").parse(request.getDateSalida().replaceAll("-", "/"));
+			Timestamp currentDate2 = new Timestamp(dateFechaSalida.getTime());
+			solTransporte.setFechaIdaFecha(currentDate2);
 			
-			Date dateFechaRegreso = new SimpleDateFormat("dd/MM/yyyy").parse(request.getDateSalidaRegreso());
+			Date dateFechaRegreso = new SimpleDateFormat("yyyy/MM/dd").parse(request.getDateSalidaRegreso().replaceAll("-", "/"));
 			solTransporte.setFechaRegresoFecha(new Timestamp(dateFechaRegreso.getTime()));
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -98,10 +91,11 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 		
 		solTransporte.setActividad(actividad);
 		
+		
+		
 		solTransporte.setTxtIdaOrigen(request.getTxtOrigen());
 		solTransporte.setTxtIdaDestino(request.getTxtDestino());
 		solTransporte.setNumIdaNumPasajeros(Integer.parseInt(request.getTxtNPasajeros()));
-		//solTransporte.setFechaIdaFecha(datePaseIda);
 		solTransporte.setTxtIdaHoraViaje(request.getCheckHoraIda());
 		solTransporte.setTxtIdaObservaciones(request.getTextAreaObservaciones());
 		
@@ -109,7 +103,6 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 		solTransporte.setTxtRegresoOrigen(request.getTxtOrigenRegreso());
 		solTransporte.setTxtRegresoDestino(request.getTxtDestinoRegreso());
 		solTransporte.setNumRegresoNumPasajeros(Integer.parseInt(request.getTxtNPasajerosRegreso()));
-		//solTransporte.setFechaRegresoFecha(datePaseRegreso);
 		solTransporte.setTxtRegresoHoraViaje(request.getCheckHoraRegreso());
 		solTransporte.setTxtRegresoObservaciones(request.getTextAreaObservacionesRegreso());
 		
@@ -478,14 +471,15 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 		LOGGER.info("Entra a BUSCAR folio de transporte para el numero de empleado : " + noEmpleado);
 		ResponseGral response = new ResponseGral();
 		List<ScddFolios> foliosLibres = foliosTransporteRepository.obtenerFolioLibre(11);
-		response.setMensaje(foliosLibres.get(0).getTxtFolio());
+		String folio = foliosLibres.isEmpty() ? "0" : foliosLibres.get(0).getTxtFolio();
+		response.setMensaje(folio);
 		response.setStatus("0");
-		
-		ScddEstatus estatusOcupado = estatusRepositoryNew.obtieneEstatuscodigo(ESTATUS_FOLIO_ESPERA);
-		
-		foliosLibres.get(0).setEstatus(estatusOcupado);
-		ScddFolios folioOcupado = (ScddFolios) foliosLibres.get(0);
-		foliosTransporteRepository.save(folioOcupado);
+		if(!folio.equals("0")) {
+			ScddEstatus estatusOcupado = estatusRepositoryNew.obtieneEstatuscodigo(ESTATUS_FOLIO_ESPERA);
+			foliosLibres.get(0).setEstatus(estatusOcupado);
+			ScddFolios folioOcupado = (ScddFolios) foliosLibres.get(0);
+			foliosTransporteRepository.save(folioOcupado);
+		}
 		return response;
 	}
 	
