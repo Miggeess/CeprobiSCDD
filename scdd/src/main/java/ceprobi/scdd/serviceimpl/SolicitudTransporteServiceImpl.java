@@ -235,9 +235,6 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 	@Override
 	public ResponseBuscaSolicitud buscaSolicitudesTransporteAdmin(RequestSolTransporte request) {
 		LOGGER.info("Entra a BUSCAR solicitud de transporte para el usuario : " + request.getTipoUsuario());
-		
-		DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		
 		ResponseBuscaSolicitud response = new ResponseBuscaSolicitud();
 		
 		List<ScddSoliTran> responsesolTransporte = new ArrayList<>();
@@ -259,21 +256,24 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 				solicitudLlenar.setTxtNombreSolicitante(responsesolTransporte.get(i).getTxtNomSolicitante().trim());
 				solicitudLlenar.setTxtFolioSolicitante(responsesolTransporte.get(i).getTxtFolio());
 				solicitudLlenar.setTxtAreaAdscripcion(responsesolTransporte.get(i).getTxtDeptoAreaAdscripcion());
-				solicitudLlenar.setDateSolicitud(responsesolTransporte.get(i).getFechaSolicitud().toString());
+				solicitudLlenar.setDateSolicitud(new SimpleDateFormat("dd/MM/yyyy").format(
+						responsesolTransporte.get(i).getFechaSolicitud()));
 				
 				solicitudLlenar.setTxtActividad(responsesolTransporte.get(i).getActividad().getTxtDescripcionActividad());
 				
 				solicitudLlenar.setTxtOrigen(responsesolTransporte.get(i).getTxtIdaOrigen());
 				solicitudLlenar.setTxtDestino(responsesolTransporte.get(i).getTxtIdaDestino());
 				solicitudLlenar.setTxtNPasajeros(""+responsesolTransporte.get(i).getNumIdaNumPasajeros());
-				solicitudLlenar.setDateSalida(responsesolTransporte.get(i).getFechaIdaFecha().toString());
+				solicitudLlenar.setDateSalida(new SimpleDateFormat("yyyy-MM-dd").format(
+						responsesolTransporte.get(i).getFechaIdaFecha()));
 				solicitudLlenar.setCheckHoraIda(responsesolTransporte.get(i).getTxtIdaHoraViaje());
 				solicitudLlenar.setTextAreaObservaciones(responsesolTransporte.get(i).getTxtIdaObservaciones());
 				
 				solicitudLlenar.setTxtOrigenRegreso(responsesolTransporte.get(i).getTxtRegresoOrigen());
 				solicitudLlenar.setTxtDestinoRegreso(responsesolTransporte.get(i).getTxtRegresoDestino());
 				solicitudLlenar.setTxtNPasajerosRegreso(""+responsesolTransporte.get(i).getNumRegresoNumPasajeros());
-				solicitudLlenar.setDateSalidaRegreso(responsesolTransporte.get(i).getFechaRegresoFecha().toString());
+				solicitudLlenar.setDateSalidaRegreso(new SimpleDateFormat("yyyy-MM-dd").format(
+						responsesolTransporte.get(i).getFechaRegresoFecha()));
 				solicitudLlenar.setCheckHoraRegreso(responsesolTransporte.get(i).getTxtRegresoHoraViaje());
 				solicitudLlenar.setTextAreaObservacionesRegreso(responsesolTransporte.get(i).getTxtRegresoObservaciones());
 				
