@@ -299,15 +299,9 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 	@Override
 	public ResponseBuscaSolicitud buscaSolicitudesCreador(RequestSolTransporte request) {
 		LOGGER.info("Entra a BUSCAR solicitud de transporte");
-		
-		DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		
 		ResponseBuscaSolicitud response = new ResponseBuscaSolicitud();
-		
 		List<ScddSoliTran> responsesolTransporte = solicitudTransporteRepository.buscaSolicitudesCreador(SOLICITUD_CREADA, SOLICITUD_DENEGADA, SOLICITUD_APROVADA, SOLICITUD_ELIMINADA, Integer.parseInt(request.getTxtUsuarioNoEmpleado().trim()));
-		
-		ArrayList<RequestSolTransporte> listaSolicitudLlenar = new ArrayList<>();
-		
+		ArrayList<RequestSolTransporte> listaSolicitudLlenar = new ArrayList<>();		
 		if(!responsesolTransporte.isEmpty()) {
 			for(int i = 0; i < responsesolTransporte.size(); i++) {
 				
@@ -318,8 +312,8 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 				solicitudLlenar.setTxtNombreSolicitante(responsesolTransporte.get(i).getTxtNomSolicitante().trim());
 				solicitudLlenar.setTxtFolioSolicitante(responsesolTransporte.get(i).getTxtFolio());
 				solicitudLlenar.setTxtAreaAdscripcion(responsesolTransporte.get(i).getTxtDeptoAreaAdscripcion());
-				//solicitudLlenar.setDateSolicitud(responsesolTransporte.get(i).getFechaSolicitud().format(formatDate));
-				solicitudLlenar.setDateSolicitud(responsesolTransporte.get(i).getFechaSolicitud().toString());
+				solicitudLlenar.setDateSolicitud(new SimpleDateFormat("dd/MM/yyyy").format(
+						responsesolTransporte.get(i).getFechaSolicitud()));
 				
 				solicitudLlenar.setTxtActividad(responsesolTransporte.get(i).getActividad().getTxtDescripcionActividad());
 				
@@ -399,21 +393,24 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 				dtoSolicitud.setTxtNombreSolicitante(resBusqueda.get(i).getTxtNomSolicitante().trim());
 				dtoSolicitud.setTxtFolioSolicitante(resBusqueda.get(i).getTxtFolio());
 				dtoSolicitud.setTxtAreaAdscripcion(resBusqueda.get(i).getTxtDeptoAreaAdscripcion());
-				dtoSolicitud.setDateSolicitud(resBusqueda.get(i).getFechaSolicitud().toString());
+				dtoSolicitud.setDateSolicitud(new SimpleDateFormat("dd/MM/yyyy").format(
+						resBusqueda.get(i).getFechaSolicitud()));
 				
 				dtoSolicitud.setTxtActividad(String.valueOf(resBusqueda.get(i).getActividad().getIdActividad()));
 				
 				dtoSolicitud.setTxtOrigen(resBusqueda.get(i).getTxtIdaOrigen());
 				dtoSolicitud.setTxtDestino(resBusqueda.get(i).getTxtIdaDestino());
 				dtoSolicitud.setTxtNPasajeros(""+resBusqueda.get(i).getNumIdaNumPasajeros());
-				dtoSolicitud.setDateSalida(resBusqueda.get(i).getFechaIdaFecha().toString());
+				dtoSolicitud.setDateSalida(new SimpleDateFormat("yyyy-MM-dd").format(
+						resBusqueda.get(i).getFechaIdaFecha()));
 				dtoSolicitud.setCheckHoraIda(resBusqueda.get(i).getTxtIdaHoraViaje());
 				dtoSolicitud.setTextAreaObservaciones(resBusqueda.get(i).getTxtIdaObservaciones());
 				
 				dtoSolicitud.setTxtOrigenRegreso(resBusqueda.get(i).getTxtRegresoOrigen());
 				dtoSolicitud.setTxtDestinoRegreso(resBusqueda.get(i).getTxtRegresoDestino());
 				dtoSolicitud.setTxtNPasajerosRegreso(""+resBusqueda.get(i).getNumRegresoNumPasajeros());
-				dtoSolicitud.setDateSalidaRegreso(resBusqueda.get(i).getFechaRegresoFecha().toString());
+				dtoSolicitud.setDateSalidaRegreso(new SimpleDateFormat("yyyy-MM-dd").format(
+						resBusqueda.get(i).getFechaRegresoFecha()));
 				dtoSolicitud.setCheckHoraRegreso(resBusqueda.get(i).getTxtRegresoHoraViaje());
 				dtoSolicitud.setTextAreaObservacionesRegreso(resBusqueda.get(i).getTxtRegresoObservaciones());
 				
