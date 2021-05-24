@@ -481,6 +481,25 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 	}
 	
 	@Override
+	public ResponseGral consultaSolicitudesPorDia(String noEmpleado) {
+		ResponseGral response = new ResponseGral();
+		LOGGER.info("Entra a  consultaSolicitudesPorDia del empleado " + noEmpleado);
+		List<ScddSoliTran> solicitudesTransporte = solicitudTransporteRepository.buscaTodasSolicitudes();
+		int contador = 0;
+		for(ScddSoliTran solicitud : solicitudesTransporte) {
+			if(solicitud.getUsuario().getIntNoEmpleado()  == Integer.parseInt(noEmpleado)){
+				if(new Date().equals(solicitud.getFechaSolicitud())) {
+					contador++;
+				}
+			}
+		}
+		response = (contador > 5 ? 
+				new ResponseGral("1","Numero de solicitudes extendido") : 
+				new ResponseGral("0","Exito"));
+		return response;
+	}
+	
+	@Override
 	public ResponseGral cancelarFolios(String folio) {
 		LOGGER.info("Entra a DESOCUPAR folio de transporte");
 		ResponseGral response = new ResponseGral();

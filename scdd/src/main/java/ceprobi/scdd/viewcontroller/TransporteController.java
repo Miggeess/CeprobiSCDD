@@ -30,7 +30,6 @@ public class TransporteController {
 	
 	@PostMapping(value = "buscaSolicitudesCreador", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseBuscaSolicitud buscaSolicitudesCreador(@RequestBody RequestSolTransporte request) {
-		LOGGER.info("Busca solicitudes usuario creador");
 		return SolicitudTransporteService.buscaSolicitudesCreador(request);
 	}
 	
@@ -43,6 +42,12 @@ public class TransporteController {
 	public ResponseGral obtenerFolioLibre(@RequestBody RequestSolTransporte request) {
 		return SolicitudTransporteService.obtenerFolioLibre(request.getTxtUsuarioNoEmpleado());
 	}
+	
+	@PostMapping(value = "consultaSolicitudesPorDia", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseGral consultaSolicitudesPorDia(@RequestBody RequestSolTransporte request) {
+		return SolicitudTransporteService.consultaSolicitudesPorDia(request.getTxtUsuarioNoEmpleado());
+	}
+	
 	
 	@PostMapping(value = "cancelarFolios", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseGral cancelarFolios(@RequestBody RequestSolTransporte request) {

@@ -24,5 +24,7 @@ public interface SolicitudTransporteService {
 	
 	ResponseGral obtenerFolioLibre(String noEmpleado);
 	
+	ResponseGral consultaSolicitudesPorDia(String noEmpleado);
+	
 	ResponseGral cancelarFolios(String folio);
 }

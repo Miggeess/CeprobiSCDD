@@ -327,6 +327,30 @@ function eliminaSolicitud(idSolicitud){
 	});
 }
 
+function consultaSolicitudesPorDia(request){
+		var numeroMaximoSolicitudes;
+		$.ajax({
+		contentType: 'application/json; charset=UTF-8',
+        data: JSON.stringify(request),
+		url : context + "/consultaSolicitudesPorDia",
+		type : "post",
+		beforeSend : function() {
+		},
+		success : function (data) {
+			if(data.status == 1){
+				numeroMaximoSolicitudes = true;
+			} else {
+				numeroMaximoSolicitudes = false;
+			}
+	    },
+		error : function (data) {
+			numeroMaximoSolicitudes = true;
+		}
+	});
+	return numeroMaximoSolicitudes;
+}
+
+
 function ocultarDivsDeSolicitud () {
 	$("#datosSolicitante").removeClass("show");
 	$("#datosServTransporte").removeClass("show");
@@ -338,7 +362,6 @@ function consultaFolioLibre() {
 	datosSeleccionados = "";
 	$("#tablaSolicitudTransporte tr").removeClass("selected");
 	ocultarDivsDeSolicitud ();
-
 
 	var f = new Date();
 	console.log("Dia : " + f.getDate());
@@ -352,6 +375,9 @@ function consultaFolioLibre() {
 
 	var request = {txtUsuarioNoEmpleado : datosSession.session.nEmpleado};
 
+	var consultaMaximoSolicitudes = consultaSolicitudesPorDia(request);
+
+	if (!consultaMaximoSolicitudes) {
 	$.ajax({
 		contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify(request),
@@ -419,6 +445,9 @@ function consultaFolioLibre() {
 			bootbox.alert("Error al invocar el servicio para consultar los folios, consulte al administrador");
 		}
 	});
+	} else{
+		bootbox.alert("Numero maximo de solicitudes creadas por dia, consulte al administrador");
+	}
 }
 
 function desHabilitarCamposSolicitud(){

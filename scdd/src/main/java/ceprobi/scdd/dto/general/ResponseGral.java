@@ -10,6 +10,11 @@ import lombok.experimental.PackagePrivate;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResponseGral {
 
+	public ResponseGral(){}
+	public ResponseGral(String status, String mensaje){
+		this.mensaje = mensaje;
+		this.status = status;
+	}
 	String status;
 	String mensaje;
 	
