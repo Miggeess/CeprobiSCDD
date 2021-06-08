@@ -1,6 +1,7 @@
 package ceprobi.scdd.service;
 
 import ceprobi.scdd.dto.general.ResponseBuscaSolicitud;
+import ceprobi.scdd.dto.general.ResponseFoliosAndLugares;
 import ceprobi.scdd.dto.general.ResponseGral;
 import ceprobi.scdd.dto.soltransporte.RequestSolTransporte;
 
@@ -22,7 +23,7 @@ public interface SolicitudTransporteService {
 	
 	ResponseGral rechazarTransporte(RequestSolTransporte request);
 	
-	ResponseGral obtenerFolioLibre(String noEmpleado);
+	ResponseFoliosAndLugares obtenerFolioLibre(String noEmpleado);
 	
 	ResponseGral consultaSolicitudesPorDia(String noEmpleado);
 	

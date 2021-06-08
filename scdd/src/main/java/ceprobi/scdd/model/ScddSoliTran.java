@@ -44,11 +44,13 @@ public class ScddSoliTran implements Serializable {/**
 	@Column(name = "DT_FECHA_SOLICITUD")
 	private Timestamp fechaSolicitud;
     
-    @Column(name = " TXT_IDA_ORIGEN")
-	private String txtIdaOrigen;
+    @ManyToOne( fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_OD_INICIO", nullable = false)
+	private ScddCatOrigenesDestinos idaOrigen;
 	
-	@Column(name = "TXT_IDA_DESTINO")
-	private String txtIdaDestino;
+	@ManyToOne( fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_OD_DESTINO", nullable = false)
+	private ScddCatOrigenesDestinos idaDestino;
 	
 	@Column(name = "TXT_IDA_FECHA")
 	private Timestamp fechaIdaFecha;
@@ -62,12 +64,13 @@ public class ScddSoliTran implements Serializable {/**
 	@Column(name = "TXT_IDA_OBSERVACIONES")
 	private String txtIdaObservaciones;
 	
+	@ManyToOne( fetch = FetchType.LAZY)
+	@JoinColumn(name = " ID_OD_REGRESO_ORIGEN", nullable = false)
+	private ScddCatOrigenesDestinos regresoOrigen;
 	
-    @Column(name = " TXT_REGRESO_ORIGEN")
-	private String txtRegresoOrigen;
-	
-	@Column(name = "TXT_REGRESO_DESTINO")
-	private String txtRegresoDestino;
+	@ManyToOne( fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_OD_REGRESO_DESTINO", nullable = false)
+	private ScddCatOrigenesDestinos regresoDestino;
 	
 	@Column(name = "TXT_REGRESO_FECHA")
 	private Timestamp fechaRegresoFecha;
@@ -81,13 +84,11 @@ public class ScddSoliTran implements Serializable {/**
 	@Column(name = "TXT_REGRESO_OBSERVACIONES")
 	private String txtRegresoObservaciones;
 	
-	
 	@Column(name = "TXT_DESCRIPCION_VIAJE")
 	private String txtDescripcionViaje;
 	
 	@Column(name = "TXT_OBSERVACION_GRAL")
 	private String txtObservacionGral;
-	
 	
 	@ManyToOne( fetch = FetchType.LAZY)
 	@JoinColumn(name = "INT_NUM_EMPLEADO", nullable = false)

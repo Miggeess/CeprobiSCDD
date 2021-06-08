@@ -15,9 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ceprobi.scdd.dto.general.ResponseBuscaSolicitud;
+import ceprobi.scdd.dto.general.ResponseFoliosAndLugares;
 import ceprobi.scdd.dto.general.ResponseGral;
 import ceprobi.scdd.dto.soltransporte.RequestSolTransporte;
 import ceprobi.scdd.model.ScddActividad;
+import ceprobi.scdd.model.ScddCatOrigenesDestinos;
 import ceprobi.scdd.model.ScddControlVechicular;
 import ceprobi.scdd.model.ScddEstatus;
 import ceprobi.scdd.model.ScddFolios;
@@ -27,6 +29,7 @@ import ceprobi.scdd.repository.ActividadRepository;
 import ceprobi.scdd.repository.ControlVehicularRepository;
 import ceprobi.scdd.repository.EstatusRepositoryNewName;
 import ceprobi.scdd.repository.FoliosTransporteRepository;
+import ceprobi.scdd.repository.OrigenesDestinosRepository;
 import ceprobi.scdd.repository.SolicitudTransporteRepository;
 import ceprobi.scdd.repository.UserRepository;
 import ceprobi.scdd.service.SolicitudTransporteService;
@@ -47,6 +50,7 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 	private static final String SOLICITUD_CONCLUIDA = "CL";
 	private static final String SOLICITUD_FINALIZADA = "F";
 	private static final String SOLICITUD_ELIMINADA = "E";
+	private static final int ID_FOLIO_LIBRE = 11;
 	
 	@Autowired
 	EstatusRepositoryNewName estatusRepositoryNew;
@@ -60,6 +64,8 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 	FoliosTransporteRepository foliosTransporteRepository;
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	OrigenesDestinosRepository origenesDestinosRepository;
 	
 	@Override
 	public ResponseGral guardarTransporte(RequestSolTransporte request) {
@@ -69,6 +75,10 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 		ScddActividad actividad = actividadRepository.obtieneActividadId(Integer.parseInt(request.getTxtActividad()));
 		ScddEstatus estatus = estatusRepositoryNew.obtieneEstatuscodigo(SOLICITUD_CREADA);  
 		ScddUsuario usuario = userRepository.buscaUsuarioNoEmpleado(Integer.parseInt(request.getTxtUsuarioNoEmpleado()));
+		ScddCatOrigenesDestinos odInicio =  origenesDestinosRepository.obtieneDetinoOrigen(Integer.parseInt(request.getTxtOrigen()));
+		ScddCatOrigenesDestinos odDestino =  origenesDestinosRepository.obtieneDetinoOrigen(Integer.parseInt(request.getTxtDestino()));
+		ScddCatOrigenesDestinos odRegresoInicio =  origenesDestinosRepository.obtieneDetinoOrigen(Integer.parseInt(request.getTxtOrigenRegreso()));
+		ScddCatOrigenesDestinos odRegresoDestino =  origenesDestinosRepository.obtieneDetinoOrigen(Integer.parseInt(request.getTxtDestinoRegreso()));
 		
 		solTransporte.setTxtNomSolicitante(request.getTxtNombreSolicitante());
 		solTransporte.setTxtFolio(request.getTxtFolioSolicitante());
@@ -90,18 +100,15 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 		}
 		
 		solTransporte.setActividad(actividad);
-		
-		
-		
-		solTransporte.setTxtIdaOrigen(request.getTxtOrigen());
-		solTransporte.setTxtIdaDestino(request.getTxtDestino());
+		solTransporte.setIdaOrigen(odInicio);
+		solTransporte.setIdaDestino(odDestino);
 		solTransporte.setNumIdaNumPasajeros(Integer.parseInt(request.getTxtNPasajeros()));
 		solTransporte.setTxtIdaHoraViaje(request.getCheckHoraIda());
 		solTransporte.setTxtIdaObservaciones(request.getTextAreaObservaciones());
 		
 		
-		solTransporte.setTxtRegresoOrigen(request.getTxtOrigenRegreso());
-		solTransporte.setTxtRegresoDestino(request.getTxtDestinoRegreso());
+		solTransporte.setRegresoOrigen(odRegresoInicio);
+		solTransporte.setRegresoDestino(odRegresoDestino);
 		solTransporte.setNumRegresoNumPasajeros(Integer.parseInt(request.getTxtNPasajerosRegreso()));
 		solTransporte.setTxtRegresoHoraViaje(request.getCheckHoraRegreso());
 		solTransporte.setTxtRegresoObservaciones(request.getTextAreaObservacionesRegreso());
@@ -116,10 +123,10 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 					solTransporte.getTxtNomSolicitante(), solTransporte.getTxtFolio(), 
 					solTransporte.getTxtDeptoAreaAdscripcion(), solTransporte.getFechaSolicitud(),
 					
-					solTransporte.getTxtIdaOrigen(), solTransporte.getTxtIdaDestino(), solTransporte.getFechaIdaFecha(), 
+					solTransporte.getIdaOrigen().getIdOrigenesDestinos(), solTransporte.getIdaDestino().getIdOrigenesDestinos(), solTransporte.getFechaIdaFecha(), 
 					solTransporte.getTxtIdaHoraViaje(), solTransporte.getNumIdaNumPasajeros(), solTransporte.getTxtIdaObservaciones(), 
 					
-					solTransporte.getTxtRegresoOrigen(), solTransporte.getTxtRegresoDestino(), solTransporte.getFechaRegresoFecha(), 
+					solTransporte.getRegresoOrigen().getIdOrigenesDestinos(), solTransporte.getRegresoDestino().getIdOrigenesDestinos(), solTransporte.getFechaRegresoFecha(), 
 					solTransporte.getTxtRegresoHoraViaje(), solTransporte.getNumRegresoNumPasajeros(), solTransporte.getTxtRegresoObservaciones(),
 					
 					solTransporte.getTxtDescripcionViaje(), Integer.parseInt(request.getTxtActividad()),
@@ -261,16 +268,16 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 				
 				solicitudLlenar.setTxtActividad(responsesolTransporte.get(i).getActividad().getTxtDescripcionActividad());
 				
-				solicitudLlenar.setTxtOrigen(responsesolTransporte.get(i).getTxtIdaOrigen());
-				solicitudLlenar.setTxtDestino(responsesolTransporte.get(i).getTxtIdaDestino());
+				solicitudLlenar.setTxtOrigen(responsesolTransporte.get(i).getIdaOrigen().getTxtLugar());
+				solicitudLlenar.setTxtDestino(responsesolTransporte.get(i).getIdaDestino().getTxtLugar());
 				solicitudLlenar.setTxtNPasajeros(""+responsesolTransporte.get(i).getNumIdaNumPasajeros());
 				solicitudLlenar.setDateSalida(new SimpleDateFormat("yyyy-MM-dd").format(
 						responsesolTransporte.get(i).getFechaIdaFecha()));
 				solicitudLlenar.setCheckHoraIda(responsesolTransporte.get(i).getTxtIdaHoraViaje());
 				solicitudLlenar.setTextAreaObservaciones(responsesolTransporte.get(i).getTxtIdaObservaciones());
 				
-				solicitudLlenar.setTxtOrigenRegreso(responsesolTransporte.get(i).getTxtRegresoOrigen());
-				solicitudLlenar.setTxtDestinoRegreso(responsesolTransporte.get(i).getTxtRegresoDestino());
+				solicitudLlenar.setTxtOrigenRegreso(responsesolTransporte.get(i).getRegresoOrigen().getTxtLugar());
+				solicitudLlenar.setTxtDestinoRegreso(responsesolTransporte.get(i).getRegresoDestino().getTxtLugar());
 				solicitudLlenar.setTxtNPasajerosRegreso(""+responsesolTransporte.get(i).getNumRegresoNumPasajeros());
 				solicitudLlenar.setDateSalidaRegreso(new SimpleDateFormat("yyyy-MM-dd").format(
 						responsesolTransporte.get(i).getFechaRegresoFecha()));
@@ -317,15 +324,15 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 				
 				solicitudLlenar.setTxtActividad(responsesolTransporte.get(i).getActividad().getTxtDescripcionActividad());
 				
-				solicitudLlenar.setTxtOrigen(responsesolTransporte.get(i).getTxtIdaOrigen());
-				solicitudLlenar.setTxtDestino(responsesolTransporte.get(i).getTxtIdaDestino());
+				solicitudLlenar.setTxtOrigen(responsesolTransporte.get(i).getIdaOrigen().getTxtLugar());
+				solicitudLlenar.setTxtDestino(responsesolTransporte.get(i).getIdaDestino().getTxtLugar());
 				solicitudLlenar.setTxtNPasajeros(""+responsesolTransporte.get(i).getNumIdaNumPasajeros());
 				solicitudLlenar.setDateSalida(responsesolTransporte.get(i).getFechaIdaFecha().toString());
 				solicitudLlenar.setCheckHoraIda(responsesolTransporte.get(i).getTxtIdaHoraViaje());
 				solicitudLlenar.setTextAreaObservaciones(responsesolTransporte.get(i).getTxtIdaObservaciones());
 				
-				solicitudLlenar.setTxtOrigenRegreso(responsesolTransporte.get(i).getTxtRegresoOrigen());
-				solicitudLlenar.setTxtDestinoRegreso(responsesolTransporte.get(i).getTxtRegresoDestino());
+				solicitudLlenar.setTxtOrigenRegreso(responsesolTransporte.get(i).getRegresoOrigen().getTxtLugar());
+				solicitudLlenar.setTxtDestinoRegreso(responsesolTransporte.get(i).getRegresoDestino().getTxtLugar());
 				solicitudLlenar.setTxtNPasajerosRegreso(""+responsesolTransporte.get(i).getNumRegresoNumPasajeros());
 				solicitudLlenar.setDateSalidaRegreso(responsesolTransporte.get(i).getFechaRegresoFecha().toString());
 				solicitudLlenar.setCheckHoraRegreso(responsesolTransporte.get(i).getTxtRegresoHoraViaje());
@@ -398,16 +405,16 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 				
 				dtoSolicitud.setTxtActividad(String.valueOf(resBusqueda.get(i).getActividad().getIdActividad()));
 				
-				dtoSolicitud.setTxtOrigen(resBusqueda.get(i).getTxtIdaOrigen());
-				dtoSolicitud.setTxtDestino(resBusqueda.get(i).getTxtIdaDestino());
+				dtoSolicitud.setTxtOrigen(resBusqueda.get(i).getIdaOrigen().getTxtLugar());
+				dtoSolicitud.setTxtDestino(resBusqueda.get(i).getIdaDestino().getTxtLugar());
 				dtoSolicitud.setTxtNPasajeros(""+resBusqueda.get(i).getNumIdaNumPasajeros());
 				dtoSolicitud.setDateSalida(new SimpleDateFormat("yyyy-MM-dd").format(
 						resBusqueda.get(i).getFechaIdaFecha()));
 				dtoSolicitud.setCheckHoraIda(resBusqueda.get(i).getTxtIdaHoraViaje());
 				dtoSolicitud.setTextAreaObservaciones(resBusqueda.get(i).getTxtIdaObservaciones());
 				
-				dtoSolicitud.setTxtOrigenRegreso(resBusqueda.get(i).getTxtRegresoOrigen());
-				dtoSolicitud.setTxtDestinoRegreso(resBusqueda.get(i).getTxtRegresoDestino());
+				dtoSolicitud.setTxtOrigenRegreso(resBusqueda.get(i).getRegresoOrigen().getTxtLugar());
+				dtoSolicitud.setTxtDestinoRegreso(resBusqueda.get(i).getRegresoDestino().getTxtLugar());
 				dtoSolicitud.setTxtNPasajerosRegreso(""+resBusqueda.get(i).getNumRegresoNumPasajeros());
 				dtoSolicitud.setDateSalidaRegreso(new SimpleDateFormat("yyyy-MM-dd").format(
 						resBusqueda.get(i).getFechaRegresoFecha()));
@@ -464,18 +471,26 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 	}
 
 	@Override
-	public ResponseGral obtenerFolioLibre(String noEmpleado) {
+	public ResponseFoliosAndLugares obtenerFolioLibre(String noEmpleado) {
 		LOGGER.info("Entra a BUSCAR folio de transporte para el numero de empleado : " + noEmpleado);
-		ResponseGral response = new ResponseGral();
-		List<ScddFolios> foliosLibres = foliosTransporteRepository.obtenerFolioLibre(11);
-		String folio = foliosLibres.isEmpty() ? "0" : foliosLibres.get(0).getTxtFolio();
-		response.setMensaje(folio);
-		response.setStatus("0");
-		if(!folio.equals("0")) {
+		ResponseFoliosAndLugares response = new ResponseFoliosAndLugares();
+		List<ScddFolios> foliosLibres = foliosTransporteRepository.obtenerFolioLibre(ID_FOLIO_LIBRE);
+		String folio = foliosLibres.isEmpty() ? "1" : foliosLibres.get(0).getTxtFolio();
+		
+		List<ScddCatOrigenesDestinos> origenes = origenesDestinosRepository.buscaTodosOrigenesDestinos();
+		
+		if(!folio.equals("1")) {
 			ScddEstatus estatusOcupado = estatusRepositoryNew.obtieneEstatuscodigo(ESTATUS_FOLIO_ESPERA);
 			foliosLibres.get(0).setEstatus(estatusOcupado);
 			ScddFolios folioOcupado = (ScddFolios) foliosLibres.get(0);
 			foliosTransporteRepository.save(folioOcupado);
+			response.setStatus("0");
+			response.setMensaje(folio);
+			response.setOrigenesDestinos(origenes);
+		} else {
+			response.setStatus("1");
+			response.setMensaje("");
+			response.setOrigenesDestinos(null);
 		}
 		return response;
 	}

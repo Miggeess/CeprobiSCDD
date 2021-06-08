@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ceprobi.scdd.dto.general.ResponseBuscaSolicitud;
+import ceprobi.scdd.dto.general.ResponseFoliosAndLugares;
 import ceprobi.scdd.dto.general.ResponseGral;
 import ceprobi.scdd.dto.soltransporte.RequestSolTransporte;
 import ceprobi.scdd.service.SolicitudTransporteService;
@@ -39,7 +40,7 @@ public class TransporteController {
 	}
 	
 	@PostMapping(value = "buscaFolios", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseGral obtenerFolioLibre(@RequestBody RequestSolTransporte request) {
+	public ResponseFoliosAndLugares obtenerFolioLibre(@RequestBody RequestSolTransporte request) {
 		return SolicitudTransporteService.obtenerFolioLibre(request.getTxtUsuarioNoEmpleado());
 	}
 	

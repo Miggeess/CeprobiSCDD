@@ -37,20 +37,21 @@ public interface SolicitudTransporteRepository extends CrudRepository<ScddSoliTr
 	@Transactional
 	@Modifying
 	@Query(value = "UPDATE ScddSoliTran s set s.txtNomSolicitante = :nomSolicitante, s.txtFolio = :txtFolio,  s.txtDeptoAreaAdscripcion = :txtDeptoAreaAdscripcion, s.fechaSolicitud = :fechaSolicitud, "
-			+ "s.txtIdaOrigen = :txtIdaOrigen, s.txtIdaDestino = :txtIdaDestino, s.fechaIdaFecha = :fechaIdaFecha, "
+			+ "s.idaOrigen = :txtIdaOrigen, s.idaDestino = :txtidaDestino, s.fechaIdaFecha = :fechaIdaFecha, "
 			+ "s.txtIdaHoraViaje = :txtIdaHoraViaje, s.numIdaNumPasajeros = :numIdaNumPasajeros, s.txtIdaObservaciones = :txtIdaObservaciones, "
 			
-			+ "s.txtRegresoOrigen = :txtRegresoOrigen, s.txtRegresoDestino = :txtRegresoDestino, s.fechaRegresoFecha = :fechaRegresoFecha, "
+			+ "s.regresoOrigen = :txtRegresoOrigen, s.regresoDestino = :txtRegresoDestino, s.fechaRegresoFecha = :fechaRegresoFecha, "
 			+ "s.txtRegresoHoraViaje = :txtRegresoHoraViaje, s.numRegresoNumPasajeros = :numRegresoNumPasajeros, s.txtRegresoObservaciones = :txtRegresoObservaciones, "
 			
 			+ "s.txtDescripcionViaje = :txtDescripcionViaje, s.actividad.idActividad = :idActividad "
 			
 			+ "WHERE s.idSolicitudTransporte = :IdSolicituTransporte")
-	public Integer actualizaSolicitud(@Param("nomSolicitante") String nomSolicitante, @Param("txtFolio") String txtFolio, @Param("txtDeptoAreaAdscripcion") String txtDeptoAreaAdscripcion, @Param("fechaSolicitud") Timestamp fechaSolicitud, 
-			@Param("txtIdaOrigen") String txtIdaOrigen, @Param("txtIdaDestino") String txtIdaDestino, @Param("fechaIdaFecha") Timestamp fechaIdaFecha, 
+	public Integer actualizaSolicitud(
+			@Param("nomSolicitante") String nomSolicitante, @Param("txtFolio") String txtFolio, @Param("txtDeptoAreaAdscripcion") String txtDeptoAreaAdscripcion, @Param("fechaSolicitud") Timestamp fechaSolicitud, 
+			@Param("txtIdaOrigen") Integer txtIdaOrigen, @Param("txtidaDestino") Integer txtIdaDestino, @Param("fechaIdaFecha") Timestamp fechaIdaFecha, 
 			@Param("txtIdaHoraViaje") String txtIdaHoraViaje, @Param("numIdaNumPasajeros") Integer numIdaNumPasajeros, @Param("txtIdaObservaciones") String txtIdaObservaciones,
 			
-			@Param("txtRegresoOrigen") String txtRegresoOrigen, @Param("txtRegresoDestino") String txtRegresoDestino, @Param("fechaRegresoFecha") Timestamp fechaRegresoFecha, 
+			@Param("txtRegresoOrigen") Integer txtRegresoOrigen, @Param("txtRegresoDestino") Integer txtRegresoDestino, @Param("fechaRegresoFecha") Timestamp fechaRegresoFecha, 
 			@Param("txtRegresoHoraViaje") String txtRegresoHoraViaje, @Param("numRegresoNumPasajeros") Integer numRegresoNumPasajeros, @Param("txtRegresoObservaciones") String txtRegresoObservaciones,
 			
 			@Param("txtDescripcionViaje") String txtDescripcionViaje, @Param("idActividad") Integer idActividad,

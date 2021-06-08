@@ -125,13 +125,13 @@ function validaCampos(){
 		camposVacios = true;
 	}
 
-	camposVacios = $("#txtOrigen").val().length <= 0 ? true : false;
-	camposVacios = $("#txtDestino").val().length <= 0 ? true : false;
+	camposVacios = $("#listaOrigenesDestinos").val().length <= 0 ? true : false;
+	camposVacios = $("#listaOrigenesDestinos2").val().length <= 0 ? true : false;
 	camposVacios = $("#txtNPasajeros").val().length <= 0 ? true : false;
 	camposVacios = $("#dateSalida").val().length <= 0 ? true : false;
 
-	camposVacios = $("#txtOrigenRegreso").val().length <= 0 ? true : false;
-	camposVacios = $("#txtDestinoRegreso").val().length <= 0 ? true : false;
+	camposVacios = $("#lodRegresoIda").val().length <= 0 ? true : false;
+	camposVacios = $("#lodRegresoDestino").val().length <= 0 ? true : false;
 	camposVacios = $("#txtNPasajerosRegreso").val().length <= 0 ? true : false;
 	camposVacios = $("#dateSalidaRegreso").val().length <= 0 ? true : false;
 
@@ -158,15 +158,15 @@ function creaRequestSaveSolicitud(tipoRequest){
 
 		"txtActividad" : checkActividad,
 
-		"txtOrigen" : $("#txtOrigen").val(),
-		"txtDestino" : $("#txtDestino").val(),
+		"txtOrigen" : $( "#listaOrigenesDestinos" ).val(),
+		"txtDestino" : $( "#listaOrigenesDestinos2" ).val(),
 		"txtNPasajeros" : $("#txtNPasajeros").val(),
 		"dateSalida" : $("#dateSalida").val(),
 		"checkHoraIda" : checkViajeTiempoIda,
 		"textAreaObservaciones" : $("#textAreaObservaciones").val(),
 
-		"txtOrigenRegreso" : $("#txtOrigenRegreso").val(),
-		"txtDestinoRegreso" : $("#txtDestinoRegreso").val(),
+		"txtOrigenRegreso" : $("#lodRegresoIda").val(),
+		"txtDestinoRegreso" : $("#lodRegresoDestino").val(),
 		"txtNPasajerosRegreso" : $("#txtNPasajerosRegreso").val(),
 		"dateSalidaRegreso" : $("#dateSalidaRegreso").val(),
 		"checkHoraRegreso" : checkViajeTiempoRegreso,
@@ -213,6 +213,12 @@ function editarSoliTransporte()	{
 	}
 }
 
+function crearElemento(data, idElement){
+	var option = document.createElement("option");
+	option.text = data;
+	idElement.appendChild(option);
+}
+
 function llenarSolicitud(data){
 	console.log("Id solicitud a ver" + data[0].idSolicitudTransporte);
 	$("#txtNombre").val(data[0].nomSolicitante);
@@ -220,16 +226,28 @@ function llenarSolicitud(data){
 	$("#txtAreaAdscripcion").val(data[0].areaAdscripcion);
 	$("#dateSolicitud").val(data[0].dateSolicitud);
 
+	//crearElemento(data[0].txtOrigen, document.getElementById("listaOrigenesDestinos"));
+	//crearElemento(data[0].txtDestino, document.getElementById("listaOrigenesDestinos2"));
+	document.getElementById("listaOrigenesDestinos").style.display="none";
+	document.getElementById("listaOrigenesDestinos2").style.display="none";
+	document.getElementById("txtOrigenOrigen").value = data[0].txtOrigen;
+	document.getElementById("txtOrigenDestino").value = data[0].txtDestino;
+	document.getElementById("txtOrigenOrigen").style.display="block";
+	document.getElementById("txtOrigenDestino").style.display="block";
 
-	$("#txtOrigen").val(data[0].txtOrigen);
-	$("#txtDestino").val(data[0].txtDestino);
 	$("#txtNPasajeros").val(data[0].txtNPasajeros);
 	$("#dateSalida").val(data[0].dateSalida);
 	$("#textAreaObservaciones").val(data[0].textAreaObservaciones);
 
-
-	$("#txtOrigenRegreso").val(data[0].txtOrigenRegreso);
-	$("#txtDestinoRegreso").val(data[0].txtDestinoRegreso);
+	//crearElemento(data[0].txtOrigenRegreso, document.getElementById("lodRegresoIda"));
+	//crearElemento(data[0].txtDestinoRegreso, document.getElementById("lodRegresoDestino"));
+	document.getElementById("lodRegresoIda").style.display="none";
+	document.getElementById("lodRegresoDestino").style.display="none";
+	document.getElementById("txtDestinoOrigen").value = data[0].txtOrigenRegreso;
+	document.getElementById("txtDestinoDestino").value = data[0].txtDestinoRegreso;
+	document.getElementById("txtDestinoOrigen").style.display="block";
+	document.getElementById("txtDestinoDestino").style.display="block";
+	
 	$("#txtNPasajerosRegreso").val(data[0].txtNPasajerosRegreso);
 	$("#dateSalidaRegreso").val(data[0].dateSalidaRegreso);
 	$("#textAreaObservacionesRegreso").val(data[0].textAreaObservacionesRegreso);
@@ -307,7 +325,6 @@ function eliminaSolicitud(idSolicitud){
 	$.ajax({
 		contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify(datos),
-        //context+/solicitudTransporte
 		url : context + "/eliminarSolicitud",
 		type : "post",
 		beforeSend : function() {
@@ -325,6 +342,51 @@ function eliminaSolicitud(idSolicitud){
 			console.log("Error al invocar el servicio");
 		}
 	});
+}
+
+function llenaDestinosLugares(data, listaHtml){
+	if(listaHtml.length == 0){
+		for(var od in data){
+			var option = document.createElement("option");
+			option.value = data[od].idOrigenesDestinos;
+    		option.text = data[od].txtLugar;
+    		listaHtml.appendChild(option);
+		}
+	} else {
+		listaHtml.selectedIndex = "0";
+	}
+	/**var listaDespegable = document.getElementById("listaOrigenesDestinos");
+	var listaDespegable2 = document.getElementById("listaOrigenesDestinos2");
+	var lodRegresoIda = document.getElementById("lodRegresoIda");
+	var lodRegresoDestino = document.getElementById("lodRegresoDestino");
+	if(listaDespegable.length == 0){
+	for(var od in data){
+		var option = document.createElement("option");
+		option.value = data[od].idOrigenesDestinos;
+    	option.text = data[od].txtLugar;
+    	listaDespegable.appendChild(option);
+	}
+	for(var od in data){
+		var option2 = document.createElement("option");
+		option2.value = data[od].idOrigenesDestinos;
+    	option2.text = data[od].txtLugar;
+    	listaDespegable2.appendChild(option2);
+	}
+	for(var od in data){
+		var opcion = document.createElement("option");
+		opcion.value = data[od].idOrigenesDestinos;
+    	opcion.text = data[od].txtLugar;
+    	lodRegresoIda.appendChild(opcion);
+    	lodRegresoDestino.appendChild(opcion);
+	}
+	listaDespegable.selectedIndex = "0";
+	listaDespegable2.selectedIndex = "0";
+	lodRegresoIda.selectedIndex = "0";
+	lodRegresoDestino.selectedIndex = "0";
+	} else {
+		listaDespegable.selectedIndex = "0";
+		listaDespegable2.selectedIndex = "0";
+	}**/
 }
 
 function consultaSolicitudesPorDia(request){
@@ -389,10 +451,25 @@ function consultaFolioLibre() {
 		success : function (data) {
 			console.log("Exito buscar folios solicitud");
 			txtFolioLibre = data.mensaje;
-			if (txtFolioLibre == "0") {
+			if (data.status == "1") {
 				bootbox.alert("No hay folios disponibles, consulte al administrador");
 			} else {
-			console.log("Folio libre = " + txtFolioLibre)
+			llenaDestinosLugares(data.origenesDestinos, document.getElementById("listaOrigenesDestinos"));
+			llenaDestinosLugares(data.origenesDestinos, document.getElementById("listaOrigenesDestinos2"));
+			llenaDestinosLugares(data.origenesDestinos, document.getElementById("lodRegresoIda"));
+			llenaDestinosLugares(data.origenesDestinos, document.getElementById("lodRegresoDestino"));
+
+			document.getElementById("txtOrigenOrigen").style.display="none";
+			document.getElementById("txtOrigenDestino").style.display="none";
+			document.getElementById("txtDestinoOrigen").style.display="none";
+			document.getElementById("txtDestinoDestino").style.display="none";
+
+			document.getElementById("listaOrigenesDestinos").style.display="block";
+			document.getElementById("listaOrigenesDestinos2").style.display="block";
+			document.getElementById("lodRegresoIda").style.display="block";
+			document.getElementById("lodRegresoDestino").style.display="block";
+
+
 			$("#txtNombre").val(datosSession.session.txtNickNameUser);
 			$("#txtNombre").prop("disabled", true );
 			$("#txtAreaAdscripcion").val(datosSession.session.txtAreAdscripcion);
@@ -416,14 +493,10 @@ function consultaFolioLibre() {
 	        $("#horaSalidaRegreso2").prop( "checked", false );
 	        $("#horaSalidaRegreso2").prop("disabled", false );
 
-	        $("#txtOrigen").val('');
-	        $("#txtDestino").val('');
 	        $("#txtNPasajeros").val('');
 	        $("#dateSalida").val('');
 	        $("#textAreaObservaciones").val('');
 
-	        $("#txtOrigenRegreso").val('');
-	        $("#txtDestinoRegreso").val('');
 	        $("#txtNPasajerosRegreso").val('');
 	        $("#dateSalidaRegreso").val('');
 	        $("#textAreaObservacionesRegreso").val('');
@@ -456,14 +529,18 @@ function desHabilitarCamposSolicitud(){
 	$("#txtAreaAdscripcion").prop("disabled", true );
 	$("#dateSolicitud").prop("disabled", true );
 
-	$("#txtOrigen").prop("disabled", true );
-	$("#txtDestino").prop("disabled", true );
+	//$("#listaOrigenesDestinos").prop("disabled", true );
+	//$("#listaOrigenesDestinos2").prop("disabled", true );
+	$("#txtOrigenOrigen").prop("disabled", true );
+	$("#txtOrigenDestino").prop("disabled", true );
 	$("#txtNPasajeros").prop("disabled", true );
 	$("#dateSalida").prop("disabled", true );
 	$("#textAreaObservaciones").prop("disabled", true );
 
-	$("#txtOrigenRegreso").prop("disabled", true );
-	$("#txtDestinoRegreso").prop("disabled", true );
+	//$("#lodRegresoIda").prop("disabled", true );
+	//$("#lodRegresoDestino").prop("disabled", true );
+	$("#txtDestinoOrigen").prop("disabled", true );
+	$("#txtDestinoDestino").prop("disabled", true );
 	$("#txtNPasajerosRegreso").prop("disabled", true );
 	$("#dateSalidaRegreso").prop("disabled", true );
 	$("#textAreaObservacionesRegreso").prop("disabled", true );
@@ -493,14 +570,14 @@ function habilitarCampos(){
 	$("#txtAreaAdscripcion").prop("disabled", false );
 	$("#dateSolicitud").prop("disabled", false );
 
-	$("#txtOrigen").prop("disabled", false );
-	$("#txtDestino").prop("disabled", false );
+	$("#listaOrigenesDestinos").prop("disabled", false );
+	$("#listaOrigenesDestinos2").prop("disabled", false );
 	$("#txtNPasajeros").prop("disabled", false );
 	$("#dateSalida").prop("disabled", false );
 	$("#textAreaObservaciones").prop("disabled", false );
 
-	$("#txtOrigenRegreso").prop("disabled", false );
-	$("#txtDestinoRegreso").prop("disabled", false );
+	$("#lodRegresoIda").prop("disabled", false );
+	$("#lodRegresoDestino").prop("disabled", false );
 	$("#txtNPasajerosRegreso").prop("disabled", false );
 	$("#dateSalidaRegreso").prop("disabled", false );
 	$("#textAreaObservacionesRegreso").prop("disabled", false );
