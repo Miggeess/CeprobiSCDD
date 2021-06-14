@@ -188,26 +188,32 @@
       					<form>
       					<div class="form-group row">
       						<div class="col-md-2">
-      							<label for="txtVehiculoAsignado">Vehiculo asignado</label>
+      							<label for="listaVehiculos">Vehiculo asignado</label>
       						</div>
       						<div class="col-md-3">
-      							<input type="text" id="txtVehiculoAsignado" class="form-control" disabled onkeyup="convertirMayus(this);">
+                                              <input type="text" class="form-control" id="txtVehiculoAsignado" style="display:none">
+                                              <select id="listaVehiculos" class="form-control" onchange="seleccionarPlaca(this.value)">
+                                                    <option value="0">Seleccione un registro</option>
+                                              </select>
       						</div>
       						<div class="col-md-2">
       							<label for="txtPlacas">Placas</label>
       						</div>
       						<div class="col-md-3">
-      							<input type="text" id="txtPlacas" class="form-control" disabled onkeyup="convertirMayus(this);">
+      							<input type="text" id="txtPlacas" class="form-control">
       						</div>
       					</div>
                                     <div class="row">
                                                 <div class="col-md-2">
-                                                      <label for="txtNomOperador">Nombre Operador</label>
+                                                      <label for="listaOperadores">Nombre Operador</label>
                                                 </div>
                                                 <div class="col-md-6">
-                                                      <input type="text" id="txtNomOperador" class="form-control" disabled onkeyup="convertirMayus(this);">
+                                                      <input type="text" class="form-control" id="txtOperadorAsignado" style="display:none">
+                                                      <select id="listaOperadores" class="form-control">
+                                                            <option value="0">Seleccione un registro</option>
+                                                      </select>
                                                 </div>
-                                          </div>
+                                    </div>
       					<div class="col-md-3">
       						<h5>Salida</h5>	
       					</div>
@@ -237,7 +243,7 @@
       							<label for="txtHoraSalida">Hora de salida</label>
       						</div>
       						<div class="col-md-3">
-      							<input type="text" id="txtHoraSalida" class="form-control" disabled>
+      							<input type="text" id="txtHoraSalida" class="form-control" disabled onKeyPress="return formatoHora(event)" maxlength="5">
       						</div>
       						<div class="col-md-2">
       							<label for="textAreaObservacionesVehiculo">Observaciones</label>

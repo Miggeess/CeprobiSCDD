@@ -188,7 +188,7 @@ function verSolicitud() {
 			success : function (data) {
 				console.log("Exito VER solicitud ADMIN");
 				if(data.status == 0){
-					llenarSolicitudAdmin(data.solicitud);
+					llenarSolicitudAdmin(data);
 				} else {
 					bootbox.alert("Error al consultar la solicitud");
 				}
@@ -202,41 +202,88 @@ function verSolicitud() {
 	}
 }
 
+function seleccionarPlaca(value){
+	var datos = {placaVehiculo : value}
+	$.ajax({
+		contentType: 'application/json; charset=UTF-8',
+		data: JSON.stringify(datos),
+		url : context + "/buscaPlaca",
+		type : "post",
+		success : function (data) {
+			$("#txtPlacas").val(data.placaVehiculo);
+			$("#txtPlacas").prop("disabled", true );
+		},
+		error : function (data) {
+			$("#exampleModal").modal("hide");
+			alert("Error al invocar el servicio");
+		}
+	});
+}
+
+function llenaVehiculos(data, listaHtml){
+	if(listaHtml.length == 1){
+	//if(listaHtml == null){
+		for(var od in data){
+			var option = document.createElement("option");
+			option.value = data[od].codigoVehiculo;
+    		option.text = data[od].txtMarca + " | " + data[od].txtNombre;
+    		listaHtml.appendChild(option);
+		}
+	} else {
+		listaHtml.selectedIndex = "0";
+	}
+}
+
+function llenaOperadores(data, listaHtml){
+	if(listaHtml.length == 1){
+		for(var od in data){
+			var option = document.createElement("option");
+			option.value = data[od].codigoOperador;
+    		option.text = data[od].txtNombre + " | " + data[od].txtApellidos;
+    		listaHtml.appendChild(option);
+		}
+	} else {
+		listaHtml.selectedIndex = "0";
+	}
+}
+
 function llenarSolicitudAdmin(data) {
-	$("#txtNombre").val(data[0].nomSolicitante);
-	$("#txtFolio").val(data[0].folioSolicitud);
-	$("#txtAreaAdscripcion").val(data[0].areaAdscripcion);
-	$("#dateSolicitud").val(data[0].dateSolicitud);
+	llenaVehiculos(data.vehiculos, document.getElementById("listaVehiculos"));
+	llenaOperadores(data.operadores, document.getElementById("listaOperadores"));
+
+	$("#txtNombre").val(data.solicitud[0].nomSolicitante);
+	$("#txtFolio").val(data.solicitud[0].folioSolicitud);
+	$("#txtAreaAdscripcion").val(data.solicitud[0].areaAdscripcion);
+	$("#dateSolicitud").val(data.solicitud[0].dateSolicitud);
+
+	$("#txtOrigen").val(data.solicitud[0].txtOrigen);
+	$("#txtDestino").val(data.solicitud[0].txtDestino);
+	$("#txtNPasajeros").val(data.solicitud[0].txtNPasajeros);
+	$("#dateSalida").val(data.solicitud[0].dateSalida);
+	$("#textAreaObservaciones").val(data.solicitud[0].textAreaObservaciones);
 
 
-	$("#txtOrigen").val(data[0].txtOrigen);
-	$("#txtDestino").val(data[0].txtDestino);
-	$("#txtNPasajeros").val(data[0].txtNPasajeros);
-	$("#dateSalida").val(data[0].dateSalida);
-	$("#textAreaObservaciones").val(data[0].textAreaObservaciones);
+	$("#txtOrigenRegreso").val(data.solicitud[0].txtOrigenRegreso);
+	$("#txtDestinoRegreso").val(data.solicitud[0].txtDestinoRegreso);
+	$("#txtNPasajerosRegreso").val(data.solicitud[0].txtNPasajerosRegreso);
+	$("#dateSalidaRegreso").val(data.solicitud[0].dateSalidaRegreso);
+	$("#textAreaObservacionesRegreso").val(data.solicitud[0].textAreaObservacionesRegreso);
 
+	$("#textDescripcionViaje").val(data.solicitud[0].textDescripcionViaje);
 
-	$("#txtOrigenRegreso").val(data[0].txtOrigenRegreso);
-	$("#txtDestinoRegreso").val(data[0].txtDestinoRegreso);
-	$("#txtNPasajerosRegreso").val(data[0].txtNPasajerosRegreso);
-	$("#dateSalidaRegreso").val(data[0].dateSalidaRegreso);
-	$("#textAreaObservacionesRegreso").val(data[0].textAreaObservacionesRegreso);
-
-	$("#textDescripcionViaje").val(data[0].textDescripcionViaje);
-
-	if(data[0].txtActividad == 1){
+	if(data.solicitud[0].txtActividad == 1){
 		$("#tipoActividad1").prop( "checked", true);
-	} else if (data[0].txtActividad == 2){
+	} else if (data.solicitud[0].txtActividad == 2){
 		$("#tipoActividad2").prop( "checked", true);
 	}
-	if ( data[0].checkHoraIda == 1 ) {
+	if ( data.solicitud[0].checkHoraIda == 1 ) {
 		$("#horaSalida1").prop( "checked", true);
-	} else if ( data[0].checkHoraIda == 2 ) {
+	} else if ( data.solicitud[0].checkHoraIda == 2 ) {
 		$("#horaSalida2").prop( "checked", true);
 	}
-	if ( data[0].checkHoraRegreso == 1 ) {
+	if ( data.solicitud[0].checkHoraRegreso == 1 ) {
 		$("#horaSalidaRegreso1").prop( "checked", true);
-	} else if ( data[0].checkHoraRegreso == 2 ) {
+	} else if ( data.solicitud[0].checkHoraRegreso == 2 ) {
 		$("#horaSalidaRegreso2").prop( "checked", true);
 	}
 
@@ -274,41 +321,45 @@ function llenarSolicitudAdmin(data) {
 		$("#horaSalidaRegreso1").prop("disabled", true );
 		$("#horaSalidaRegreso2").prop("disabled", true );
 
-	if(data[0].estatus != "Creada"){
+	if(data.solicitud[0].estatus != "Creada"){
 		console.log("solicitud aceptada, denegada, guardada");
 
-		$("#idConstrolVehicular").val(data[0].idControlVehicular);
-
+		document.getElementById("listaVehiculos").style.display="none";
+		document.getElementById("listaOperadores").style.display="none";
+		document.getElementById("txtVehiculoAsignado").value = data.solicitud[0].vehiculoAsignado;
+		document.getElementById("txtVehiculoAsignado").style.display="block";
 		$("#txtVehiculoAsignado").prop("disabled", true );
+		document.getElementById("txtOperadorAsignado").value = data.solicitud[0].nomOperador;
+		document.getElementById("txtOperadorAsignado").style.display="block";
+		$("#txtOperadorAsignado").prop("disabled", true );
+
+		$("#idConstrolVehicular").val(data.solicitud[0].idControlVehicular);
 		$("#txtPlacas").prop("disabled", true );
-		$("#txtNomOperador").prop("disabled", true );
-		$("#txtVehiculoAsignado").val(data[0].vehiculoAsignado);
-		$("#txtPlacas").val(data[0].placas);
-		$("#txtNomOperador").val(data[0].nomOperador);
+		$("#txtPlacas").val(data.solicitud[0].placas);
 
-		$("#txtKilometros").val(data[0].kilometrosSalida);
-		$("#txtCombustible").val(data[0].combustibleSalida);
-		$("#txtHoraSalida").val(data[0].horaSalida);
-		$("#textAreaObservacionesVehiculo").val(data[0].observacionSalida);
+		$("#txtKilometros").val(data.solicitud[0].kilometrosSalida);
+		$("#txtCombustible").val(data.solicitud[0].combustibleSalida);
+		$("#txtHoraSalida").val(data.solicitud[0].horaSalida);
+		$("#textAreaObservacionesVehiculo").val(data.solicitud[0].observacionSalida);
 
-		if(data[0].estatus == "Aceptada"){
+		if(data.solicitud[0].estatus == "Aceptada"){
 			$("#txtKilometrosEntrada").prop("disabled", false );
 			$("#txtCombustibleEntrada").prop("disabled", false );
 			$("#txtHoraSalidaEntrada").prop("disabled", false );
 			$("#textAreaObservacionesVehiculoEntrada").prop("disabled", false );
 			$("#botonEditar").hide();
 			$("#botonEnviar").show();
-		} else if (data[0].estatus == "Concluida") {
+		} else if (data.solicitud[0].estatus == "Concluida") {
 
 			$("#txtKilometros").prop("disabled", true );
 			$("#txtCombustible").prop("disabled", true );
 			$("#txtHoraSalida").prop("disabled", true );
 			$("#textAreaObservacionesVehiculo").prop("disabled", true );
 
-			$("#txtKilometrosEntrada").val(data[0].kilometrosEntrada);
-			$("#txtCombustibleEntrada").val(data[0].combustibleEntrada);
-			$("#txtHoraSalidaEntrada").val(data[0].horaEntrada);
-			$("#textAreaObservacionesVehiculoEntrada").val(data[0].observacionesEntrada);
+			$("#txtKilometrosEntrada").val(data.solicitud[0].kilometrosEntrada);
+			$("#txtCombustibleEntrada").val(data.solicitud[0].combustibleEntrada);
+			$("#txtHoraSalidaEntrada").val(data.solicitud[0].horaEntrada);
+			$("#textAreaObservacionesVehiculoEntrada").val(data.solicitud[0].observacionesEntrada);
 			$("#txtKilometrosEntrada").prop("disabled", true );
 			$("#txtCombustibleEntrada").prop("disabled", true );
 			$("#txtHoraSalidaEntrada").prop("disabled", true );
@@ -405,9 +456,9 @@ function guardarSolicitudTransporte(){
 
 function validaCampos(){
 	var camposVacios;
-	camposVacios = $("#txtVehiculoAsignado").val().length <= 0 ? true : false;
+	camposVacios = $("#listaVehiculos").val().length <= 0 ? true : false;
 	camposVacios = $("#txtPlacas").val().length <= 0 ? true : false;
-	camposVacios = $("#txtNomOperador").val().length <= 0 ? true : false;
+	camposVacios = $("#listaOperadores").val().length <= 0 ? true : false;
 	if(dataSeleccionado.estatus == "Creada") {
 		camposVacios = $("#txtKilometros").val().length <= 0 ? true : false;
 		camposVacios = $("#txtCombustible").val().length <= 0 ? true : false;
@@ -427,9 +478,9 @@ function crearRequest() {
 	if(dataSeleccionado.estatus == "Creada") {
 		requestSolicitudTransporte = {
 			"idSolicitudTransporte" : idSolicitud,
-			"vehiculoAsignado" : $("#txtVehiculoAsignado").val(),
+			"vehiculoAsignado" : $("#listaVehiculos").val(),
 			"placas" : $("#txtPlacas").val(),
-			"nomOperador" : $("#txtNomOperador").val(),
+			"nomOperador" : $("#listaOperadores").val(),
 			"kilometrosSalida" : $("#txtKilometros").val(),
 			"combustibleSalida" : $("#txtCombustible").val(),
 			"horaSalida" : $("#txtHoraSalida").val(),
@@ -578,4 +629,22 @@ function aproveSoliAdmin(){
 			alert("Error");
 		}
 		});
+}
+
+function formatoHora(e){
+	var inputLenth = $('#txtHoraSalida').val().length;
+	var key = window.Event ? e.which : e.keyCode;
+	if(inputLenth == 1){
+		var isNumerico = (key >= 48 && key <= 57);
+		if(isNumerico){
+			var hora = $('#txtHoraSalida').val();
+			$('#txtHoraSalida').val(hora+e.key+":");
+			//Para que ya no se coloque el numero
+			return false;
+		} else {
+			return false;
+		}
+	} else {
+		return (key >= 48 && key <= 57);
+	}
 }

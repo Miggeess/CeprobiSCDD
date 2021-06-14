@@ -142,9 +142,16 @@ function llenarSolicitudGerente(data){
 		$("#horaSalidaRegreso2").prop( "checked", true);
 	}
 
-	$("#txtVehiculoAsignado").val(data[0].vehiculoAsignado);
+	document.getElementById("listaVehiculos").style.display="none";
+	document.getElementById("listaOperadores").style.display="none";
+	document.getElementById("txtVehiculoAsignado").value = data[0].vehiculoAsignado;
+	document.getElementById("txtVehiculoAsignado").style.display="block";
+	$("#txtVehiculoAsignado").prop("disabled", true );
+	document.getElementById("txtOperadorAsignado").value = data[0].nomOperador;
+	document.getElementById("txtOperadorAsignado").style.display="block";
+	$("#txtOperadorAsignado").prop("disabled", true );
+
 	$("#txtPlacas").val(data[0].placas);
-	$("#txtNomOperador").val(data[0].nomOperador);
 
 	$("#txtKilometros").val(data[0].kilometrosSalida);
 	$("#txtCombustible").val(data[0].combustibleSalida);

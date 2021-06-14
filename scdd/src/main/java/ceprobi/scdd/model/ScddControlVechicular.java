@@ -5,9 +5,12 @@ import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,14 +29,13 @@ public class ScddControlVechicular implements Serializable {/**
 	@Column(name = "ID_SOL_TRANS_CONTROL_VEHICULAR", nullable = false, unique = true)
 	private int idControlVehicular;
 	
-	@Column(name = "TXT_VEHICULO")
-	private String txtNomVehiculo;
+	@ManyToOne( fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_VEHICULO")
+	private ScddCatVehiculos vehiculo;
 	
-	@Column(name = "TXT_PLACAS")
-	private String txtPlacas;
-	
-	@Column(name = "TXT_NOMBRE_OPERADOR")
-	private String txtNomOperador;
+	@ManyToOne( fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_OPERADOR")
+	private ScddCatOperadores operador;
 	
 	@Column(name = "TXT_SALIDA_KM")
 	private String txtKMSalida;

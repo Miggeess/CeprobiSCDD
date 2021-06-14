@@ -15,11 +15,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ceprobi.scdd.dto.general.ResponseBuscaSolicitud;
+import ceprobi.scdd.dto.general.ResponseDTOSolicitud;
 import ceprobi.scdd.dto.general.ResponseFoliosAndLugares;
 import ceprobi.scdd.dto.general.ResponseGral;
+import ceprobi.scdd.dto.general.ResponsePlacaVehiculo;
 import ceprobi.scdd.dto.soltransporte.RequestSolTransporte;
 import ceprobi.scdd.model.ScddActividad;
+import ceprobi.scdd.model.ScddCatOperadores;
 import ceprobi.scdd.model.ScddCatOrigenesDestinos;
+import ceprobi.scdd.model.ScddCatVehiculos;
 import ceprobi.scdd.model.ScddControlVechicular;
 import ceprobi.scdd.model.ScddEstatus;
 import ceprobi.scdd.model.ScddFolios;
@@ -29,9 +33,11 @@ import ceprobi.scdd.repository.ActividadRepository;
 import ceprobi.scdd.repository.ControlVehicularRepository;
 import ceprobi.scdd.repository.EstatusRepositoryNewName;
 import ceprobi.scdd.repository.FoliosTransporteRepository;
+import ceprobi.scdd.repository.OperadoresRepository;
 import ceprobi.scdd.repository.OrigenesDestinosRepository;
 import ceprobi.scdd.repository.SolicitudTransporteRepository;
 import ceprobi.scdd.repository.UserRepository;
+import ceprobi.scdd.repository.VehiculosRepository;
 import ceprobi.scdd.service.SolicitudTransporteService;
 
 @Service
@@ -66,6 +72,10 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 	UserRepository userRepository;
 	@Autowired
 	OrigenesDestinosRepository origenesDestinosRepository;
+	@Autowired
+	OperadoresRepository operadoresRepository;
+	@Autowired
+	VehiculosRepository vehiculosRepository;
 	
 	@Override
 	public ResponseGral guardarTransporte(RequestSolTransporte request) {
@@ -214,9 +224,11 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 					Integer.parseInt(request.getIdSolicitud().trim()));
 			
 		} else {
-			controlVehicular.setTxtNomVehiculo(request.getVehiculoAsignado());
-			controlVehicular.setTxtPlacas(request.getPlacas());
-			controlVehicular.setTxtNomOperador(request.getNomOperador());
+			ScddCatOperadores operador = operadoresRepository.obtieneOperador(request.getNomOperador());
+			controlVehicular.setOperador(operador);
+			ScddCatVehiculos vehiculo = vehiculosRepository.obtieneVehiculo(request.getVehiculoAsignado());
+			controlVehicular.setVehiculo(vehiculo);
+			
 			
 			controlVehicular.setTxtKMSalida(request.getKilometrosSalida());
 			controlVehicular.setTxtCombustibleSalida(request.getCombustibleSalida());
@@ -387,16 +399,30 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 	}
 	
 	@Override
+	public ResponsePlacaVehiculo buscaPlaca(RequestSolTransporte request) {
+		ResponsePlacaVehiculo response = new ResponsePlacaVehiculo();
+		ScddCatVehiculos resVehiculos = vehiculosRepository.obtieneVehiculo(request.getPlacaVehiculo());
+		response.setMensaje("Exito");
+		response.setStatus("0");
+		response.setPlacaVehiculo(resVehiculos.getTxtPlacas());
+		return response;
+	}
+	
+	@Override
 	public ResponseBuscaSolicitud buscarSolicitud(RequestSolTransporte request) {
 		ResponseBuscaSolicitud response = new ResponseBuscaSolicitud();
 		List<ScddSoliTran> resBusqueda = solicitudTransporteRepository.buscaSolicitud(Integer.parseInt(request.getIdSolicitud()));
+		List<ScddCatOperadores> resOperadores = operadoresRepository.buscaTodosOperadores();
+		List<ScddCatVehiculos> resVehiculos = vehiculosRepository.buscaTodosVehiculos();
+
+		response.setOperadores(resOperadores);
+		response.setVehiculos(resVehiculos);
 		ArrayList<RequestSolTransporte> listaSol = new ArrayList<>();
 		if(!resBusqueda.isEmpty()) {
 			for(int i = 0; i < resBusqueda.size(); i++) {
 				RequestSolTransporte dtoSolicitud = new RequestSolTransporte();
 				
 				dtoSolicitud.setIdSolicitud(String.valueOf(resBusqueda.get(i).getIdSolicitudTransporte()));
-				
 				dtoSolicitud.setTxtNombreSolicitante(resBusqueda.get(i).getTxtNomSolicitante().trim());
 				dtoSolicitud.setTxtFolioSolicitante(resBusqueda.get(i).getTxtFolio());
 				dtoSolicitud.setTxtAreaAdscripcion(resBusqueda.get(i).getTxtDeptoAreaAdscripcion());
@@ -431,11 +457,11 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 									resBusqueda.get(i).getControlVehicular().getIdControlVehicular() : ""));
 					
 					dtoSolicitud.setVehiculoAsignado(resBusqueda.get(i).getControlVehicular() != null ? 
-									resBusqueda.get(i).getControlVehicular().getTxtNomVehiculo() : "");
+									resBusqueda.get(i).getControlVehicular().getVehiculo().getTxtNombre() : "");
 					dtoSolicitud.setPlacas(resBusqueda.get(i).getControlVehicular() != null ? 
-							resBusqueda.get(i).getControlVehicular().getTxtPlacas() : "");
+							resBusqueda.get(i).getControlVehicular().getVehiculo().getTxtPlacas() : "");
 					dtoSolicitud.setNomOperador(resBusqueda.get(i).getControlVehicular() != null ? 
-							resBusqueda.get(i).getControlVehicular().getTxtNomOperador() : "");
+							resBusqueda.get(i).getControlVehicular().getOperador().getTxtNombre() : "");
 					dtoSolicitud.setKilometrosSalida(String.valueOf(resBusqueda.get(i).getControlVehicular() != null ? 
 							resBusqueda.get(i).getControlVehicular().getTxtKMSalida() : ""));
 					dtoSolicitud.setCombustibleSalida(resBusqueda.get(i).getControlVehicular() != null ? 

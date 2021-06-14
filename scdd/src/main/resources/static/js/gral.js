@@ -17,6 +17,8 @@ function soloNumeros(e){
 }
 
 function formatoNumerico(dato){
-	dato.value = new Intl.NumberFormat().format(dato.value);
+	if(!dato.includes(',')){
+		dato.value = new Intl.NumberFormat().format(dato.value);
+	}
 }
 

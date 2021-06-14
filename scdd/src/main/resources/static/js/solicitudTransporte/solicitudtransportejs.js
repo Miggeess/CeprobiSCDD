@@ -226,8 +226,6 @@ function llenarSolicitud(data){
 	$("#txtAreaAdscripcion").val(data[0].areaAdscripcion);
 	$("#dateSolicitud").val(data[0].dateSolicitud);
 
-	//crearElemento(data[0].txtOrigen, document.getElementById("listaOrigenesDestinos"));
-	//crearElemento(data[0].txtDestino, document.getElementById("listaOrigenesDestinos2"));
 	document.getElementById("listaOrigenesDestinos").style.display="none";
 	document.getElementById("listaOrigenesDestinos2").style.display="none";
 	document.getElementById("txtOrigenOrigen").value = data[0].txtOrigen;

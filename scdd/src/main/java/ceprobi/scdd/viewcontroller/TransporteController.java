@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ceprobi.scdd.dto.general.ResponseBuscaSolicitud;
+import ceprobi.scdd.dto.general.ResponseDTOSolicitud;
 import ceprobi.scdd.dto.general.ResponseFoliosAndLugares;
 import ceprobi.scdd.dto.general.ResponseGral;
+import ceprobi.scdd.dto.general.ResponsePlacaVehiculo;
 import ceprobi.scdd.dto.soltransporte.RequestSolTransporte;
 import ceprobi.scdd.service.SolicitudTransporteService;
 
@@ -37,6 +39,11 @@ public class TransporteController {
 	@PostMapping(value = "buscarSolicitud", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseBuscaSolicitud buscarSolicitud(@RequestBody RequestSolTransporte request) {
 		return SolicitudTransporteService.buscarSolicitud(request);
+	}
+	
+	@PostMapping(value = "buscaPlaca", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponsePlacaVehiculo buscaPlaca(@RequestBody RequestSolTransporte request) {
+		return SolicitudTransporteService.buscaPlaca(request);
 	}
 	
 	@PostMapping(value = "buscaFolios", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

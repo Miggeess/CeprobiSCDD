@@ -1,8 +1,13 @@
 package ceprobi.scdd.dto.soltransporte;
 
+
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import ceprobi.scdd.model.ScddCatOperadores;
+import ceprobi.scdd.model.ScddCatVehiculos;
 import lombok.Data;
 import lombok.experimental.PackagePrivate;
 
@@ -101,5 +106,8 @@ public class RequestSolTransporte {
 	
 	@JsonProperty("rolUsr")
 	String rolUsr;
+	
+	@JsonProperty("placaVehiculo")
+	String placaVehiculo;
 	
 }
