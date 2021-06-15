@@ -1,5 +1,7 @@
 package ceprobi.scdd.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -16,7 +18,7 @@ public interface UserRepository extends CrudRepository<ScddUsuario, Integer>{
 	public ScddUsuario obtieneDatosPorNikName(@Param("txtNickName") String txtNickName);
 	
 	@Query(value = "SELECT v FROM ScddUsuario v WHERE v.txtPwd = :passVerifica")
-	public ScddUsuario verificaContraValida(@Param("passVerifica") String passVerifica);
+	public List<ScddUsuario> verificaContraValida(@Param("passVerifica") String passVerifica);
 	
 	@Transactional
 	@Modifying

@@ -1,4 +1,6 @@
 package ceprobi.scdd.viewcontroller;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -97,7 +99,9 @@ public class VistasController {
 			mav.setViewName(VIEW_INDEX_PAGE_CEPROBI);
 			return mav;
 		}
-		ScddUsuario usuarioActivo = userRepository.obtieneDatosPorNikName(nickName.trim());
+		//ScddUsuario usuarioActivo = userRepository.obtieneDatosPorNikName(nickName.trim());
+		int nEmpleado = Integer.parseInt(nickName.trim());
+		ScddUsuario usuarioActivo = userRepository.buscaUsuarioNoEmpleado(nEmpleado);
 		if(usuarioActivo == null) {
 			mav.addObject("usrInexistente", true);
 			mav.setViewName(VIEW_INDEX_PAGE_CEPROBI);
@@ -123,31 +127,36 @@ public class VistasController {
 			return mav;
 		}
 		
-		ScddUsuario usuarioExistente = userRepository.obtieneDatosPorNikName(nickName.trim());
-		ScddUsuario passOk = userRepository.verificaContraValida(pwd);
-		
-		if(usuarioExistente.getIntNoEmpleado() != passOk.getIntNoEmpleado()) {
+		//usuarioActivo
+		List<ScddUsuario> passOk = userRepository.verificaContraValida(pwd);
+		boolean contraCoincide = false;
+		for(ScddUsuario obj : passOk) {
+			if(usuarioActivo.getIntNoEmpleado() == obj.getIntNoEmpleado()) {
+				contraCoincide = true;
+			}
+		}
+		if(!contraCoincide) {
 			mav.addObject("usrInexistente", true);
 			mav.setViewName(VIEW_INDEX_PAGE_CEPROBI);
 			return mav;
 		} else {
-			view = usuarioExistente.getTxtRolUsr().equals("USER_CAPTURA") ? VIEW_CAPTURA_PAGE : 
-				usuarioExistente.getTxtRolUsr().equals("USER_ADMIN") ? VIEW_ADMIN_PAGE : 
-				usuarioExistente.getTxtRolUsr().equals("USER_GRAL") ? VIEW_GERENTE_PAGE : 
+			view = usuarioActivo.getTxtRolUsr().equals("USER_CAPTURA") ? VIEW_CAPTURA_PAGE : 
+				usuarioActivo.getTxtRolUsr().equals("USER_ADMIN") ? VIEW_ADMIN_PAGE : 
+					usuarioActivo.getTxtRolUsr().equals("USER_GRAL") ? VIEW_GERENTE_PAGE : 
 					VIEW_INDEX_PAGE_CEPROBI;
 		}
-		
 		HttpSession miSession = request.getSession(true);
 		LOGGER.info("Se creo la session con id : " + miSession.getId());
 		
-		UsuarioSessionDAO usuario = new UsuarioSessionDAO(nickName.trim(),true,miSession.getId().trim(),usuarioExistente.getTxtRolUsr(), usuarioExistente.getIntNoEmpleado(), usuarioExistente.getTxtAreaAdscripcion() );
+		// nickName.trim()
+		UsuarioSessionDAO usuario = new UsuarioSessionDAO(usuarioActivo.getTxtNickName(),true,miSession.getId().trim(),usuarioActivo.getTxtRolUsr(), usuarioActivo.getIntNoEmpleado(), usuarioActivo.getTxtAreaAdscripcion() );
 		
 		/**Agregar al objeto session los valores*/
 		miSession.setAttribute("session", usuario);
 		/**Envia los valores a la vista*/
 		mav.addObject("session", miSession);
 		
-		Integer respuesta = userRepository.actualizaUsuarioActivo(1, nickName.trim(),passOk.getIntNoEmpleado());
+		Integer respuesta = userRepository.actualizaUsuarioActivo(1, usuarioActivo.getTxtNickName(),usuarioActivo.getIntNoEmpleado());
 		
 		mav.setViewName(view);
 		return mav;
