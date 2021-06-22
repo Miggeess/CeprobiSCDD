@@ -43,4 +43,10 @@ public class ScddCatVehiculos implements Serializable {
 	@Column(name = "ID_ESTATUS")
 	private String idEstatus;
 	
+	@Column(name = "TXT_PLAZAS")
+	private String txtPlazas;
+	
+	@Column(name = "TXT_MODELO")
+	private String txtModelo;
+	
 }

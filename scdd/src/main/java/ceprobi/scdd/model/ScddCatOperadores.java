@@ -40,4 +40,7 @@ public class ScddCatOperadores implements Serializable {
 	//private ScddEstatus idEstatus;
 	@Column(name = "ID_ESTATUS")
 	private String idEstatus;
+	
+	@Column(name = "TXT_NOEMPLEADO")
+	private String noEmpleado;
 }

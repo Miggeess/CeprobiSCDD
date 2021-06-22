@@ -33,11 +33,12 @@ function llenarDatatable(datos) {
 	 $('#tablaSolicitudTransporte').DataTable(
         {
         	"language": {
-      			"emptyTable": "No data available in table"
+      			"emptyTable": "Sin informacion disponible en la tabla"
       		},
             searching: false,
             data: datos,
             select: true,
+        	scrollCollapse: true,
             "columns": [
                 {"data": "nomSolicitante"},
                 {"data": "folioSolicitud"},

@@ -16,6 +16,9 @@ public interface VehiculosRepository extends CrudRepository<ScddCatVehiculos, St
 	@Query(value = "SELECT v FROM ScddCatVehiculos v ")
 	List<ScddCatVehiculos> buscaTodosVehiculos();
 	
+	@Query(value = "SELECT vs FROM ScddCatVehiculos vs WHERE vs.txtPlazas >= :plazas")
+	List<ScddCatVehiculos> buscaVehiculosPorPlazas(@Param("plazas") String plazas);
+	
 	@Query(value = "SELECT ve FROM ScddCatVehiculos ve WHERE ve.codigoVehiculo = :txtCodigoVehiculo")
 	ScddCatVehiculos obtieneVehiculo(@Param("txtCodigoVehiculo") String txtCodigoVehiculo);
 	

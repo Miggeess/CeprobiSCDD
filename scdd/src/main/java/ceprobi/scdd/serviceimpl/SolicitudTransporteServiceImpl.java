@@ -413,13 +413,22 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 		ResponseBuscaSolicitud response = new ResponseBuscaSolicitud();
 		List<ScddSoliTran> resBusqueda = solicitudTransporteRepository.buscaSolicitud(Integer.parseInt(request.getIdSolicitud()));
 		List<ScddCatOperadores> resOperadores = operadoresRepository.buscaTodosOperadores();
-		List<ScddCatVehiculos> resVehiculos = vehiculosRepository.buscaTodosVehiculos();
 
 		response.setOperadores(resOperadores);
-		response.setVehiculos(resVehiculos);
 		ArrayList<RequestSolTransporte> listaSol = new ArrayList<>();
 		if(!resBusqueda.isEmpty()) {
 			for(int i = 0; i < resBusqueda.size(); i++) {
+				
+				List<ScddCatVehiculos> resVehiculos = new ArrayList<>();
+				List<ScddCatVehiculos> resVehiculos2 = vehiculosRepository.buscaTodosVehiculos();
+				for(ScddCatVehiculos obj :  resVehiculos2) {
+					LOGGER.info(obj.getTxtNombre() + " " + obj.getTxtPlazas());
+					if(Integer.parseInt(obj.getTxtPlazas()) >= resBusqueda.get(i).getNumIdaNumPasajeros()) {
+						resVehiculos.add(obj);
+					}
+				}
+				response.setVehiculos(resVehiculos);
+				
 				RequestSolTransporte dtoSolicitud = new RequestSolTransporte();
 				
 				dtoSolicitud.setIdSolicitud(String.valueOf(resBusqueda.get(i).getIdSolicitudTransporte()));
