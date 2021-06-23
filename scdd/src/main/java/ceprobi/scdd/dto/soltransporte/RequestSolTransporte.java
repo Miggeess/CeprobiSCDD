@@ -61,6 +61,8 @@ public class RequestSolTransporte {
 	String vehiculoAsignado;
 	@JsonProperty("placas")
 	String placas;
+	@JsonProperty("plazas")
+	String plazas;
 	@JsonProperty("nomOperador")
 	String nomOperador;
 	@JsonProperty("kilometrosSalida")

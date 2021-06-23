@@ -405,6 +405,7 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 		response.setMensaje("Exito");
 		response.setStatus("0");
 		response.setPlacaVehiculo(resVehiculos.getTxtPlacas());
+		response.setPlazasVehiculo(resVehiculos.getTxtPlazas());
 		return response;
 	}
 	
@@ -464,13 +465,15 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 					
 					dtoSolicitud.setIdControlVehicular(String.valueOf(resBusqueda.get(i).getControlVehicular() != null ? 
 									resBusqueda.get(i).getControlVehicular().getIdControlVehicular() : ""));
-					
 					dtoSolicitud.setVehiculoAsignado(resBusqueda.get(i).getControlVehicular() != null ? 
 									resBusqueda.get(i).getControlVehicular().getVehiculo().getTxtNombre() : "");
 					dtoSolicitud.setPlacas(resBusqueda.get(i).getControlVehicular() != null ? 
 							resBusqueda.get(i).getControlVehicular().getVehiculo().getTxtPlacas() : "");
+					dtoSolicitud.setPlazas(resBusqueda.get(i).getControlVehicular() != null ? 
+							resBusqueda.get(i).getControlVehicular().getVehiculo().getTxtPlazas() : "");
 					dtoSolicitud.setNomOperador(resBusqueda.get(i).getControlVehicular() != null ? 
-							resBusqueda.get(i).getControlVehicular().getOperador().getTxtNombre() : "");
+							resBusqueda.get(i).getControlVehicular().getOperador().getTxtNombre() + 
+							" " + resBusqueda.get(i).getControlVehicular().getOperador().getTxtApellidos() : "");
 					dtoSolicitud.setKilometrosSalida(String.valueOf(resBusqueda.get(i).getControlVehicular() != null ? 
 							resBusqueda.get(i).getControlVehicular().getTxtKMSalida() : ""));
 					dtoSolicitud.setCombustibleSalida(resBusqueda.get(i).getControlVehicular() != null ? 
@@ -565,4 +568,40 @@ public class SolicitudTransporteServiceImpl implements SolicitudTransporteServic
 		return response;
 	}
 
+	@Override
+	public ResponseGral guardarAndAprobarSolicitudAdmin(RequestSolTransporte request) {
+		ResponseGral response =  new ResponseGral();
+		ScddControlVechicular controlVehicular = new ScddControlVechicular();
+		ScddCatOperadores operador = operadoresRepository.obtieneOperador(request.getNomOperador());
+		controlVehicular.setOperador(operador);
+		ScddCatVehiculos vehiculo = vehiculosRepository.obtieneVehiculo(request.getVehiculoAsignado());
+		controlVehicular.setVehiculo(vehiculo);
+		controlVehicular.setTxtKMSalida(request.getKilometrosSalida());
+		controlVehicular.setTxtCombustibleSalida(request.getCombustibleSalida());
+		controlVehicular.setTmHoraSalida(request.getHoraSalida());
+		controlVehicular.setTxtObservacionSalida(request.getObservacionSalida());
+		ScddControlVechicular saveEntity=controlVehicularRepository.save(controlVehicular);
+		LOGGER.info("se guardo la solicitud admin : " + saveEntity.getIdControlVehicular());
+		
+		//ScddEstatus estatus = estatusRepositoryNew.obtieneEstatuscodigo(SOLICITUD_GUARDADA); 
+		ScddEstatus estatus = estatusRepositoryNew.obtieneEstatuscodigo(SOLICITUD_APROVADA); 
+		Integer respo = solicitudTransporteRepository.actualizaIdControlVechicular(
+				saveEntity.getIdControlVehicular(),
+				estatus.getIdEstatus(),
+				Integer.parseInt(request.getIdSolicitud().trim()));
+		
+		//estatus = estatusRepositoryNew.obtieneEstatuscodigo(SOLICITUD_APROVADA);
+		//Integer respo = solicitudTransporteRepository.actualizaEstatusTransporte(estatus.getIdEstatus(), 
+		//		Integer.parseInt(request.getIdSolicitud()));
+		
+		if(respo == null) {
+			response.setMensaje("Error al aprovar la solicitud");
+			response.setStatus("1");
+		} else {
+			response.setMensaje("Exito");
+			response.setStatus("0");
+		}
+		return response;
+	}
+	
 }

@@ -12,4 +12,5 @@ public class ResponsePlacaVehiculo extends ResponseGral {
 
 	String placaVehiculo;
 	
+	String plazasVehiculo;
 }

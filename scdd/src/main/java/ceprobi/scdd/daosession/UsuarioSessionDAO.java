@@ -8,14 +8,18 @@ public class UsuarioSessionDAO {
 	private String txtRolUsr;
 	private int nEmpleado;
 	private String txtAreAdscripcion;
+	private String txtNombres;
+	private String txtApellidos;	
 
-	public UsuarioSessionDAO(String txtNickNameUser, boolean booleanActiveUser, String idSession, String txtRolUsr, int nEmpleado, String txtAreAdscripcion) {
+	public UsuarioSessionDAO(String txtNickNameUser, boolean booleanActiveUser, String idSession, String txtRolUsr, int nEmpleado, String txtAreAdscripcion, String txtNombres, String txtApellidos) {
 		this.txtNickNameUser = txtNickNameUser;
 		this.booleanActiveUser = booleanActiveUser;
 		this.idSession = idSession;
 		this.txtRolUsr = txtRolUsr;
 		this.nEmpleado = nEmpleado;
 		this.txtAreAdscripcion = txtAreAdscripcion;
+		this.txtNombres = txtNombres;
+		this.txtApellidos = txtApellidos;
 	}
 	
 	public String getTxtNickNameUser() {
@@ -56,5 +60,16 @@ public class UsuarioSessionDAO {
 	public void setTxtAreAdscripcion(String txtAreAdscripcion) {
 		this.txtAreAdscripcion = txtAreAdscripcion;
 	}
-	
+	public String getTxtNombres() {
+		return txtNombres;
+	}
+	public void setTxtNombres(String txtNombres) {
+		this.txtNombres = txtNombres;
+	}
+	public String getTxtApellidos() {
+		return txtApellidos;
+	}
+	public void setTxtApellidos(String txtApellidos) {
+		this.txtApellidos = txtApellidos;
+	}
 }

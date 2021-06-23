@@ -1,98 +1,10 @@
- var json = [
-    {
-        idSolicitudTransporte: "1",
-        nomSolicitante: "solero",
-        folioSolicitud: "santa rosalia",
-        areaAdscripcion: "5564565454",
-        dateSolicitud: "chavito del ofirtz"
-    },
-    {
-        idSolicitudTransporte: "1",
-        nomSolicitante: "solero",
-        folioSolicitud: "santa rosalia",
-        areaAdscripcion: "5564565454",
-        dateSolicitud: "chavito del ofirtz"
-    }, 
-    {
-        idSolicitudTransporte: "1",
-        nomSolicitante: "solero",
-        folioSolicitud: "santa rosalia",
-        areaAdscripcion: "5564565454",
-        dateSolicitud: "chavito del ofirtz"
-    },
-    {
-        idSolicitudTransporte: "1",
-        nomSolicitante: "solero",
-        folioSolicitud: "santa rosalia",
-        areaAdscripcion: "5564565454",
-        dateSolicitud: "chavito del ofirtz"
-    }, 
-    {
-        idSolicitudTransporte: "1",
-        nomSolicitante: "solero",
-        folioSolicitud: "santa rosalia",
-        areaAdscripcion: "5564565454",
-        dateSolicitud: "chavito del ofirtz"
-    },
-    {
-        idSolicitudTransporte: "1",
-        nomSolicitante: "solero",
-        folioSolicitud: "santa rosalia",
-        areaAdscripcion: "5564565454",
-        dateSolicitud: "chavito del ofirtz"
-    },
-    {
-        idSolicitudTransporte: "1",
-        nomSolicitante: "solero",
-        folioSolicitud: "santa rosalia",
-        areaAdscripcion: "5564565454",
-        dateSolicitud: "chavito del ofirtz"
-    },
-    {
-        idSolicitudTransporte: "1",
-        nomSolicitante: "solero",
-        folioSolicitud: "santa rosalia",
-        areaAdscripcion: "5564565454",
-        dateSolicitud: "chavito del ofirtz"
-    },
-    {
-        idSolicitudTransporte: "1",
-        nomSolicitante: "solero",
-        folioSolicitud: "santa rosalia",
-        areaAdscripcion: "5564565454",
-        dateSolicitud: "chavito del ofirtz"
-    },
-    {
-        idSolicitudTransporte: "1",
-        nomSolicitante: "solero",
-        folioSolicitud: "santa rosalia",
-        areaAdscripcion: "5564565454",
-        dateSolicitud: "chavito del ofirtz"
-    },
-    {
-        idSolicitudTransporte: "1",
-        nomSolicitante: "solero",
-        folioSolicitud: "santa rosalia",
-        areaAdscripcion: "5564565454",
-        dateSolicitud: "chavito del ofirtz"
-    },
-    {
-        idSolicitudTransporte: "1",
-        nomSolicitante: "solero",
-        folioSolicitud: "santa rosalia",
-        areaAdscripcion: "5564565454",
-        dateSolicitud: "chavito del ofirtz"
-    }
-];
 var dataSeleccionado = "";
-//window.onload = function() {
 $(document).ready(function () {
 	console.log(datosSession);
  	document.getElementById("txtNombreUsuario").innerHTML = datosSession.session.txtNickNameUser;
- 	servicioSolicitudTransporte();//servicio consulta solicitudes
+ 	servicioSolicitudTransporte();
 	seleccionFila(); 
-});	
-// }
+});
 
 function seleccionFila(){
 
@@ -148,11 +60,11 @@ function cargarTablaAdmin(datos) {
             select: true,
             "columns": [
                 //{"data": "idSolicitudTransporte"},
+                {"data": "estatus"},
                 {"data": "nomSolicitante"},
                 {"data": "folioSolicitud"},
                 {"data": "areaAdscripcion"},
-                {"data": "dateSolicitud"},
-                {"data": "estatus"}
+                {"data": "dateSolicitud"}
             ]
         });
 }
@@ -212,6 +124,7 @@ function seleccionarPlaca(value){
 		success : function (data) {
 			$("#txtPlacas").val(data.placaVehiculo);
 			$("#txtPlacas").prop("disabled", true );
+			$("#txtPlazasVehiculo").val(data.plazasVehiculo);
 		},
 		error : function (data) {
 			$("#exampleModal").modal("hide");
@@ -221,8 +134,7 @@ function seleccionarPlaca(value){
 }
 
 function llenaVehiculos(data, listaHtml){
-	if(listaHtml.length == 1){
-	//if(listaHtml == null){
+	if(listaHtml.length == 0){
 		for(var od in data){
 			var option = document.createElement("option");
 			option.value = data[od].codigoVehiculo;
@@ -235,7 +147,7 @@ function llenaVehiculos(data, listaHtml){
 }
 
 function llenaOperadores(data, listaHtml){
-	if(listaHtml.length == 1){
+	if(listaHtml.length == 0){
 		for(var od in data){
 			var option = document.createElement("option");
 			option.value = data[od].codigoOperador;
@@ -336,6 +248,7 @@ function llenarSolicitudAdmin(data) {
 		$("#idConstrolVehicular").val(data.solicitud[0].idControlVehicular);
 		$("#txtPlacas").prop("disabled", true );
 		$("#txtPlacas").val(data.solicitud[0].placas);
+		$("#txtPlazasVehiculo").val(data.solicitud[0].plazas);
 
 		$("#txtKilometros").val(data.solicitud[0].kilometrosSalida);
 		$("#txtCombustible").val(data.solicitud[0].combustibleSalida);
@@ -646,5 +559,59 @@ function formatoHora(e){
 		}
 	} else {
 		return (key >= 48 && key <= 57);
+	}
+}
+
+/**
+*	FUNCION PARA REMPLAZAR LOS DOS MOMENTOS DEL GUARDAR Y APROBAR SOLICITUD ADMIN
+*/
+function guardaryAprobarSolicitudAdmin(){
+	bootbox.confirm({
+			title: 'Aprovar solicitud',
+			message: '<p>¿Estas seguro de aprovar la solicitud?</p>',
+			buttons: {
+				cancel: {
+ 					label: 'No',
+            		className: 'btn-danger'
+				},
+				confirm: {
+					label: 'Si',
+            		className: 'btn-success'
+				}
+			},
+			callback: function(result){
+				console.log("Aprovar solicitud : " + result);
+				if(result){
+					guardayapruebasoladmin();
+				}else{
+
+				}
+			}
+			});
+}
+
+function guardayapruebasoladmin(){
+	if (!validaCampos()) {
+		var request = crearRequest();
+		$.ajax({
+			contentType: 'application/json; charset=UTF-8',
+        	data: JSON.stringify(request),
+			url : context + "/guardaAndApruebaSolicitudAdmin",
+			type : "post",
+			beforeSend : function() {
+			},
+			success : function (data) {
+			$("#exampleModal").modal("hide"); 
+			bootbox.alert("Exito al guadar la solicitud!", function(){ 
+    			location.reload();
+			});
+		},
+		error : function (data) {
+			$("#exampleModal").modal("hide");			
+			alert("Error en el servicio");
+		}
+		});
+	} else {
+		bootbox.alert("Verifique sus datos!");
 	}
 }

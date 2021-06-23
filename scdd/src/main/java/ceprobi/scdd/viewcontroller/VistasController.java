@@ -149,7 +149,7 @@ public class VistasController {
 		LOGGER.info("Se creo la session con id : " + miSession.getId());
 		
 		// nickName.trim()
-		UsuarioSessionDAO usuario = new UsuarioSessionDAO(usuarioActivo.getTxtNickName(),true,miSession.getId().trim(),usuarioActivo.getTxtRolUsr(), usuarioActivo.getIntNoEmpleado(), usuarioActivo.getTxtAreaAdscripcion() );
+		UsuarioSessionDAO usuario = new UsuarioSessionDAO(usuarioActivo.getTxtNickName(),true,miSession.getId().trim(),usuarioActivo.getTxtRolUsr(), usuarioActivo.getIntNoEmpleado(), usuarioActivo.getTxtAreaAdscripcion(), usuarioActivo.getTxtNombreUsr(), usuarioActivo.getTxtApellido() );
 		
 		/**Agregar al objeto session los valores*/
 		miSession.setAttribute("session", usuario);

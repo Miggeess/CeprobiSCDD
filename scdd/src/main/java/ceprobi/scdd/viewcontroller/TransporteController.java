@@ -72,14 +72,19 @@ public class TransporteController {
 		return SolicitudTransporteService.guardarTransporteAdmin(request);
 	}
 	
-	@PostMapping(value = "buscaSolTransporteAdmin", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseBuscaSolicitud buscaSolTransporteAdmin(@RequestBody RequestSolTransporte request) {
-		return SolicitudTransporteService.buscaSolicitudesTransporteAdmin(request);
+	@PostMapping(value = "guardaAndApruebaSolicitudAdmin", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseGral guardarAndAprobarSolicitudAdmin(@RequestBody RequestSolTransporte request) {
+		return SolicitudTransporteService.guardarAndAprobarSolicitudAdmin(request);
 	}
 	
 	@PostMapping(value = "aprovarSolTransporteAdmin", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseGral aprovarSolicitudAdmin(@RequestBody RequestSolTransporte request) {
 		return SolicitudTransporteService.aprovarTransporte(request);
+	}
+	
+	@PostMapping(value = "buscaSolTransporteAdmin", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseBuscaSolicitud buscaSolTransporteAdmin(@RequestBody RequestSolTransporte request) {
+		return SolicitudTransporteService.buscaSolicitudesTransporteAdmin(request);
 	}
 	
 	@PostMapping(value = "rechazarSolTransporteAdmin", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

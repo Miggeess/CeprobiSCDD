@@ -76,7 +76,9 @@
                                                       <label class="custom-control-label" for="tipoActividad2">Investigación o Campo</label>
                                                 </div>
                                                 <div class="col-md-5">
-                                                      <textarea class="form-control" id="textDescripcionViaje" rows="2" placeholder="Descripcion del viaje" onkeyup="convertirMayus(this);"></textarea>
+                                                      <textarea class="form-control" id="textDescripcionViaje" rows="2" placeholder="Descripcion del viaje" onkeyup="convertirMayus(this);" required></textarea>
+                                                      <small id="descripcionViaje" class="form-text text-muted">Describe brevemente la actividad a realizar.</small>
+                                                      <div class="invalid-feedback">Este campo es obligatorio.</div>
                                                 </div>
       					</div>		
       					<div class="col-md-3">
@@ -98,13 +100,13 @@
       						<div class="col-md-3">
       							<!--<input type="text" class="form-control" id="txtDestino" onkeyup="convertirMayus(this);">-->
                                                 <input type="text" class="form-control" id="txtOrigenDestino" style="display:none">
-                                                <select id="listaOrigenesDestinos2" class="form-control"></select>
+                                                <select id="listaOrigenesDestinos2" class="form-control" onchange="cambiarRegresoDestino()"></select>
       						</div>
       						<div class="col-md-1">
       							<label for="txtNPasajeros">N. Pasajeros:</label>
       						</div>
       						<div class="col-md-2">
-      							<input class="form-control" id="txtNPasajeros" type="text" onKeyPress="return soloNumeros(event)">
+      							<input class="form-control" id="txtNPasajeros" type="text" onKeyPress="return soloNumeros(event)" onblur="cambiarRegresoNPasajeros()">
       						</div>
       					</div>
       					<div class="form-group row">
@@ -112,7 +114,7 @@
       							<label for="dateSalida">Fecha salida:</label>
       						</div>
       						<div class="col-md-3">
-      							<input type="date" class="form-control" id="dateSalida">
+      							<input type="date" class="form-control" id="dateSalida" onblur="cambiarRegresoFecha()">
       						</div>
       						<div class="col-md-1">
       							<label >Hora de salida:</label>

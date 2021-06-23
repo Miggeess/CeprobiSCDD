@@ -192,11 +192,15 @@
       						</div>
       						<div class="col-md-3">
                                               <input type="text" class="form-control" id="txtVehiculoAsignado" style="display:none">
-                                              <select id="listaVehiculos" class="form-control" onchange="seleccionarPlaca(this.value)">
-                                                    <option value="0">Seleccione un registro</option>
-                                              </select>
+                                              <select id="listaVehiculos" class="form-control" onchange="seleccionarPlaca(this.value)"></select>
       						</div>
-      						<div class="col-md-2">
+                                          <div class="col-md-1">
+                                                <label for="txtPlazasVehiculo">Plazas Vehiculo</label>
+                                          </div>
+                                          <div class="col-md-1">
+                                                <input type="text" id="txtPlazasVehiculo" class="form-control" disabled>
+                                          </div>
+      						<div class="col-md-1">
       							<label for="txtPlacas">Placas</label>
       						</div>
       						<div class="col-md-3">
@@ -209,9 +213,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                       <input type="text" class="form-control" id="txtOperadorAsignado" style="display:none">
-                                                      <select id="listaOperadores" class="form-control">
-                                                            <option value="0">Seleccione un registro</option>
-                                                      </select>
+                                                      <select id="listaOperadores" class="form-control"></select>
                                                 </div>
                                     </div>
       					<div class="col-md-3">
@@ -309,7 +311,8 @@
         <!--boton oculto-->
         <button type="button" class="btn btn-warning" onclick="habilitarCampos()" id="botonEditar">Editar</button>
         <!--falta programar-->
-        <button type="button" class="btn btn-primary" onclick="guardarSolicitudTransporte()" id="botonEnviar">Guardar</button>
+        <!--<button type="button" class="btn btn-primary" onclick="guardarSolicitudTransporte()" id="botonEnviar">Guardar</button>-->
+        <button type="button" class="btn btn-primary" onclick="guardaryAprobarSolicitudAdmin()" id="botonEnviar">Guardar y Aprobar</button>
       </div>
     </div>
   </div>

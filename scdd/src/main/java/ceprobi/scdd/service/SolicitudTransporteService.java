@@ -32,4 +32,6 @@ public interface SolicitudTransporteService {
 	ResponseGral consultaSolicitudesPorDia(String noEmpleado);
 	
 	ResponseGral cancelarFolios(String folio);
+	
+	ResponseGral guardarAndAprobarSolicitudAdmin(RequestSolTransporte request);
 }

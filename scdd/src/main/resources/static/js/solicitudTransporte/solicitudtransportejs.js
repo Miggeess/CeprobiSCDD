@@ -29,11 +29,32 @@ function seleccionarRegistro () {
 	});
 }
 
+function cambiarRegresoDestino(){
+	var indexOrigenDestino2 = document.getElementById("listaOrigenesDestinos2").selectedIndex;
+	document.getElementById("lodRegresoIda").selectedIndex = indexOrigenDestino2;
+}
+function cambiarRegresoNPasajeros(){
+	$("#txtNPasajerosRegreso").val($("#txtNPasajeros").val());	
+}
+function cambiarRegresoFecha(){
+	document.getElementById("dateSalidaRegreso").value = document.getElementById("dateSalida").value;
+}
+
 function llenarDatatable(datos) {
 	 $('#tablaSolicitudTransporte').DataTable(
         {
         	"language": {
-      			"emptyTable": "Sin informacion disponible en la tabla"
+      			"emptyTable": "Sin informacion disponible en la tabla",
+      			"paginate": {
+      				"first":      "Primero",
+      				"last":       "Último",
+      				"next":       "Siguiente",
+      				"previous":   "Anterior"
+      			},
+      			"infoEmpty":      "Muestra 0 a 0 de 0 entradas",
+      			select: {
+      				rows: "%d rows selected"
+      			}
       		},
             searching: false,
             data: datos,
@@ -469,7 +490,7 @@ function consultaFolioLibre() {
 			document.getElementById("lodRegresoDestino").style.display="block";
 
 
-			$("#txtNombre").val(datosSession.session.txtNickNameUser);
+			$("#txtNombre").val(datosSession.session.txtNombres + " " + datosSession.session.txtApellidos);
 			$("#txtNombre").prop("disabled", true );
 			$("#txtAreaAdscripcion").val(datosSession.session.txtAreAdscripcion);
 			$("#txtAreaAdscripcion").prop("disabled", true );
