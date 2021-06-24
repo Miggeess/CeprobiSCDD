@@ -18,6 +18,7 @@
       		<div class="card">
       			<div class="card-header">
       				<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#datosSolicitante">DATOS DEL SOLICITANTE</button>
+                              <p><small id="descripcionControlVehicularDatos" class="form-text text-muted" >     *Captura realizada por USUARIO</small></p>
       			</div>
       			<div id="datosSolicitante" class="collapse" data-parent="#accordion">
       				<div class="card-body">
@@ -57,6 +58,7 @@
       		<div class="card">
       			<div class="card-header">
       				<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#datosServTransporte">DATOS DEL SERVICIO DE TRANSPORTE</button>
+                              <p><small id="descripcionControlVehicularDatos" class="form-text text-muted" >     *Captura realizada por USUARIO</small></p>
       			</div>
       			<div id="datosServTransporte" class="collapse" data-parent="#accordion">
       				<div class="card-body">
@@ -182,6 +184,7 @@
       		<div class="card">
       			<div class="card-header">
       				<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#controlFlotaVehicular">CONTROL DE FLOTA VEHICULAR</button>
+                              <p><small id="descripcionControlVehicularDatos" class="form-text text-muted" >     *Captura realizada por ADMINISTRADOR</small></p>
       			</div>
       			<div id="controlFlotaVehicular" class="collapse" data-parent="#accordion">
       				<div class="card-body">
@@ -246,6 +249,8 @@
       						</div>
       						<div class="col-md-3">
       							<input type="text" id="txtHoraSalida" class="form-control" disabled onKeyPress="return formatoHora(event)" maxlength="5">
+                                                <p><small id="descripcionControlVehicularDatos" class="form-text text-muted" >     *Formato 24 horas. Ejemplo: 08:30, 21:00</small></p>
+
       						</div>
       						<div class="col-md-2">
       							<label for="textAreaObservacionesVehiculo">Observaciones</label>
